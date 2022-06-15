@@ -7,6 +7,8 @@
 #define filePath "../database/carros.dat"
 #define tempFilePath "../database/carros.tmp"
 
+//Mesma lógica utilizada no arquivo clientesDB.c, acesse o arquivo para mais informações.
+
 void inserirVeiculoDB(Veiculo veiculo){
     ListaVeiculo *listaVeiculo = pegarVeiculosDB();
     int maiorId = 0;

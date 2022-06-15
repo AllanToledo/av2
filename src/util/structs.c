@@ -24,6 +24,6 @@ void printVeiculo(Veiculo veiculo) {
     printf("|%7s", veiculo.placa);
     printf("|%4s", veiculo.arCondicionado? "Sim" : "Nao");
     printf("|%11dKm", veiculo.quilometragem);
-    printf("| R$%5.2f", veiculo.valorDiaria);
+    printf("|R$%6.2f", veiculo.valorDiaria);
     printf("|%4s|\n", veiculo.disponivel? "Sim" : "Nao");
 }
