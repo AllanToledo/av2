@@ -6,19 +6,19 @@
 typedef struct ListaVeiculo ListaVeiculo;
 typedef struct ListaVeiculo {
     Veiculo veiculo;
-    ListaVeiculo *next;
+    ListaVeiculo *proximo;
 } ListaVeiculo;
 
 typedef struct ListaClientes ListaClientes;
 typedef struct ListaClientes {
     Cliente cliente;
-    ListaClientes *next;
+    ListaClientes *proximo;
 } ListaClientes;
 
 typedef struct ListaLocacoes ListaLocacoes;
 typedef struct ListaLocacoes {
     Locacao locacao;
-    ListaLocacoes *next;
+    ListaLocacoes *proximo;
 } ListaLocacoes;
 
 void liberarListaVeiculos(ListaVeiculo *listaVeiculo);

@@ -3,9 +3,9 @@
 #ifndef AV2_CLIENTESDB_H
 #define AV2_CLIENTESDB_H
 
-void insertCliente(Cliente cliente);
-void updateCliente(Cliente cliente);
-void deleteCliente(Cliente cliente);
-ListaClientes *getClientes();
+void inserirClientesDB(Cliente cliente);
+void atualizarClientesDB(Cliente cliente);
+void removerClientesDB(Cliente cliente);
+ListaClientes *pegarClientesDB();
 
 #endif //AV2_CLIENTESDB_H

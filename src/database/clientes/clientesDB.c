@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../../util/collections.h"
+#include "clientesDB.h"
 
 #define filePath "../database/clientes.dat"
 #define tempFilePath "../database/clientes.tmp"
 
-void insertCliente(Cliente cliente){
+void inserirClientesDB(Cliente cliente){
     FILE *file = fopen(filePath, "ab");
     fwrite(&cliente, sizeof(Cliente), 1, file);
     fclose(file);
 }
 
-void updateCliente(Cliente cliente){
+void atualizarClientesDB(Cliente cliente){
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Cliente clienteAux;
@@ -29,7 +30,7 @@ void updateCliente(Cliente cliente){
     rename(tempFilePath, filePath);
 }
 
-void deleteCliente(Cliente cliente){
+void removerClientesDB(Cliente cliente){
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Cliente clienteAux;
@@ -44,14 +45,14 @@ void deleteCliente(Cliente cliente){
     rename(tempFilePath, filePath);
 }
 
-ListaClientes *getClientes(){
+ListaClientes *pegarClientesDB(){
     FILE *file = fopen(filePath, "rb");
     ListaClientes *lista = NULL;
     Cliente cliente;
     while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
         ListaClientes *new = (ListaClientes *)malloc(sizeof(ListaClientes));
         new->cliente = cliente;
-        new->next = lista;
+        new->proximo = lista;
         lista = new;
     }
     fclose(file);

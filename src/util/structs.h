@@ -47,4 +47,10 @@ typedef struct {
     float valor;
 } Locacao;
 
+
+void printCliente(Cliente cliente);
+void printVeiculoCabecalho();
+void printVeiculo(Veiculo veiculo);
+void printLocacao(Locacao locacao);
+
 #endif //AV2_STRUCTS_H

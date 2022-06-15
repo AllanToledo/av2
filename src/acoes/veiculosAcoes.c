@@ -1,21 +1,29 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "acoes.h"
 #include "../util/collections.h"
 #include "../database/veiculos/veiculosDB.h"
 
 void cadastrarVeiculo();
+
 void listarVeiculos();
+
 void atualizarVeiculo();
 
+void deletarVeiculo();
+
+void listarVeiculosVelhos();
 
 const listaAcoes veiculoActions = {
         .acoes = (acao[]) {
                 {.nome = "Cadastrar Veiculo", .acao = cadastrarVeiculo},
                 {.nome = "Listar Veiculos", .acao = listarVeiculos},
                 {.nome = "Atualizar Veiculo", .acao = atualizarVeiculo},
+                {.nome = "Remover Veiculo", .acao = deletarVeiculo},
+                {.nome = "Listar Veiculo Velhos", .acao = listarVeiculosVelhos},
 
-                    //Adicionar outras ações acima
+                //Adicionar outras ações acima
                 {.nome = "Voltar", .acao = NULL}
         },
 };
@@ -29,8 +37,14 @@ void cadastrarVeiculo() {
     Veiculo veiculo;
     printf("Digite o modelo do veículo: ");
     scanf(" %s", veiculo.modelo);
-    printf("Digite a cor do veículo: ");
-    scanf(" %s", veiculo.cor);
+    printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
+    int cor;
+    scanf("%d", &cor);
+    if(cor == 0){
+        strcpy(veiculo.cor, "Preto");
+    } else {
+        strcpy(veiculo.cor, "Prata");
+    }
     printf("Digite o motor do veículo (1.0, 1.6 ou 1.8): ");
     scanf(" %f", &veiculo.motor);
     printf("Digite o ano de fabricação do veículo: ");
@@ -55,31 +69,23 @@ void listarVeiculos() {
         printf("Não há veículos cadastrados.\n");
         return;
     }
+    printVeiculoCabecalho();
     do {
         Veiculo veiculo = listaVeiculos->veiculo;
-        printf("Modelo: %s\n", veiculo.modelo);
-        printf("Cor: %s\n", veiculo.cor);
-        printf("Motor: %.1f\n", veiculo.motor);
-        printf("Ano de fabricação: %d\n", veiculo.anoFabricacao);
-        printf("Placa: %s\n", veiculo.placa);
-        printf("Ar condicionado: %s\n", veiculo.arCondicionado ? "sim" : "não");
-        printf("Quilometragem: %dKm\n", veiculo.quilometragem);
-        printf("Valor da diária: R$%.2f\n", veiculo.valorDiaria);
-        printf("Disponível: %s\n", veiculo.disponivel ? "sim" : "não");
-        printf("\n");
-    } while ((listaVeiculos = listaVeiculos->next) != NULL);
+        printVeiculo(veiculo);
+    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
     liberarListaVeiculos(listaVeiculos);
 }
 
 void atualizarVeiculo() {
-    printf("Digite a placa do veículo: ");
-    char placa[8];
-    scanf(" %s", placa);
     ListaVeiculo *listaVeiculos = pegarVeiculosDB();
     if (listaVeiculos == NULL) {
         printf("Não há veículos cadastrados.\n");
         return;
     }
+    printf("Digite a placa do veículo: ");
+    char placa[8];
+    scanf(" %s", placa);
     Veiculo veiculo;
     int achou = FALSE;
     do {
@@ -89,30 +95,28 @@ void atualizarVeiculo() {
             achou = TRUE;
             break;
         }
-    } while ((listaVeiculos = listaVeiculos->next) != NULL);
+    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
     liberarListaVeiculos(listaVeiculos);
     if (!achou) {
         printf("Veículo não encontrado.\n");
         return;
     }
-    printf("Veículo encontrado:\n");
-    printf("Modelo: %s\n", veiculo.modelo);
-    printf("Cor: %s\n", veiculo.cor);
-    printf("Motor: %.1f\n", veiculo.motor);
-    printf("Ano de fabricação: %d\n", veiculo.anoFabricacao);
-    printf("Placa: %s\n", veiculo.placa);
-    printf("Ar condicionado: %s\n", veiculo.arCondicionado ? "sim" : "não");
-    printf("Quilometragem: %dKm\n", veiculo.quilometragem);
-    printf("Valor da diária: R$%.2f\n", veiculo.valorDiaria);
-    printf("Disponível: %s\n", veiculo.disponivel ? "sim" : "não");
+    printVeiculoCabecalho();
+    printVeiculo(veiculo);
     printf("\n");
 
     printf("Digite as novas informações do veículo:\n\n");
 
     printf("Digite o modelo do veículo: ");
     scanf(" %s", veiculo.modelo);
-    printf("Digite a cor do veículo: ");
-    scanf(" %s", veiculo.cor);
+    printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
+    int cor;
+    scanf(" %d", &cor);
+    if (cor == 0) {
+        strcpy(veiculo.cor, "Preto");
+    } else {
+        strcpy(veiculo.cor, "Prata");
+    }
     printf("Digite o motor do veículo (1.0, 1.6 ou 1.8): ");
     scanf(" %f", &veiculo.motor);
     printf("Digite o ano de fabricação do veículo: ");
@@ -127,4 +131,69 @@ void atualizarVeiculo() {
     scanf(" %f", &veiculo.valorDiaria);
     atualizarVeiculoDB(veiculo);
     printf("Veículo atualizado com sucesso!\n");
+}
+
+void deletarVeiculo() {
+    ListaVeiculo *listaVeiculos = pegarVeiculosDB();
+    if (listaVeiculos == NULL) {
+        printf("Não há veículos cadastrados.\n");
+        return;
+    }
+    printf("Digite a placa do veículo: ");
+    char placa[8];
+    scanf(" %s", placa);
+    Veiculo veiculo;
+    int achou = FALSE;
+    do {
+        veiculo = listaVeiculos->veiculo;
+        int placaIgual = strcmp(placa, veiculo.placa) == 0;
+        if (placaIgual) {
+            achou = TRUE;
+            break;
+        }
+    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
+    liberarListaVeiculos(listaVeiculos);
+    if (!achou) {
+        printf("Veículo não encontrado.\n");
+        return;
+    }
+    printVeiculoCabecalho();
+    printVeiculo(veiculo);
+    printf("\n");
+    printf("Digite EXCLUIR para confirmar a exclusão do veículo.\n");
+    char confirmacao[8];
+    scanf(" %s", confirmacao);
+    if (strcmp(confirmacao, "EXCLUIR") != 0) {
+        printf("Exclusão cancelada.\n");
+        return;
+    }
+    removerVeiculoDB(veiculo);
+    printf("Veículo removido com sucesso!\n");
+}
+
+//função que retorna o ano atual
+int pegarAnoAtual() {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    return tm.tm_year + 1900;
+}
+
+
+void listarVeiculosVelhos() {
+    ListaVeiculo *listaVeiculos = pegarVeiculosDB();
+    if (listaVeiculos == NULL) {
+        printf("Não há veículos cadastrados.\n");
+        return;
+    }
+
+    int anoAtual = pegarAnoAtual();
+
+    printf("Veículos fabricados antes de %d:\n", anoAtual - 3);
+    printVeiculoCabecalho();
+    do {
+        Veiculo veiculo = listaVeiculos->veiculo;
+        if ((anoAtual - veiculo.anoFabricacao) <= 3) continue;
+        printVeiculo(veiculo);
+    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
+    liberarListaVeiculos(listaVeiculos);
 }
