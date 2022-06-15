@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include "util/util.h"
+#include "menu/menu.h"
+#include <windows.h>
 
 int main() {
-    item i;
-    i.valor = 10;
-    printItem(i);
+    SetConsoleOutputCP(CP_UTF8);
+    menuPrincipal();
     return 0;
 }
