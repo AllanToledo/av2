@@ -15,6 +15,19 @@ void deletarVeiculo();
 
 void listarVeiculosVelhos();
 
+/*
+ * Menu de locações, que permite ao usuário escolher entre as opções:
+ * 1. Cadastrar um novo veículo
+ * 2. Listar todos os veículos
+ * 3. Atualizar um veículo
+ * 4. Deletar um veículo
+ * 5. Listar veículos velhos
+ * E a ultima é para voltar ao menu principal.
+ *
+ * listaAcoes é uma estrutura que contém um vetor de funções, que são chamadas
+ * ao digitar a opção desejada.
+ */
+
 const listaAcoes veiculoActions = {
         .acoes = (acao[]) {
                 {.nome = "Cadastrar Veiculo", .acao = cadastrarVeiculo},
