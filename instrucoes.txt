@@ -1,0 +1,11 @@
+//O TERMINAL PRECISA ESTAR ABERTO NA PASTA "C:\LINGUAGEM C\Projeto\av2>"
+// Se a pasta "build" não estiver criada, roda o comando:
+
+cmake . -B build -G Ninja
+
+//Quando a pasta "build" já estiver criada, para criar um novo executavel, rode o comando:
+
+cmake --build build
+
+
+//Abrir o programa por fora do VScode, o executavel fica na pasta ./build/av2
