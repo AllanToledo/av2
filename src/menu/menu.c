@@ -8,6 +8,8 @@
  * 2. Entrar no submenu do cadastro de clientes
  * 3. Entrar no submenu do cadastro de veículos
  */
+void subMenu(listaAcoes acoes);
+
 void menuPrincipal() {
     int opcao;
     do {
@@ -26,13 +28,13 @@ void menuPrincipal() {
          */
         switch (opcao) {
             case 1:
-                menuLocacoes();
+                subMenu(pegarListaLocacoesAcoes());
                 break;
             case 2:
-                menuClientes();
+                subMenu(pegarListaClientesAcoes());
                 break;
             case 3:
-                menuVeiculos();
+                subMenu(pegarListaVeiculosAcoes());
                 break;
             case 9:
                 return;
@@ -48,27 +50,25 @@ void menuPrincipal() {
  * pegada do vetor de opções.
  * O vetor de opções é inicializado no início do programa, no arquivo de ações.
  */
-
-void menuLocacoes() {
+void subMenu(listaAcoes acoes){
     int opcao;
     do {
         printf("\n\n");
-        listaAcoes locacoesActions = pegarListaLocacoesAcoes();
-        int quantidadeAcoes = 1; //Começa em 1 porque o último elemento é o "Voltar"
+        int quantidadeAcoes = 1; //Começa em 1 porque o último elemento é sempre o "Voltar"
         int i = 0;
         /*
          * Percorre o vetor de opções, imprimindo cada opção.
          * A cada iteração, a quantidade de opções é incrementada.
          * A última opção é um retorno ao menu principal, que possui a ação NULL.
          */
-        while(locacoesActions.acoes[i].acao != NULL) {
-            printf("%d. %s\n", i + 1, locacoesActions.acoes[i].nome);
+        while(acoes.acoes[i].acao != NULL) {
+            printf("%d. %s\n", i + 1, acoes.acoes[i].nome);
             i++; //Poderia usar direto a variavel quantidadeAcoes, mas é melhor para o entendimento usar i
             //já que dentro desse escopo ele representa o índice mesmo
         }
         //Pela lógica, ele sempre sai antes de imprimir a ultima, que é o retorno ao menu principal.
         //Então imprimimos a ultima opção depois do loop.
-        printf("%d. %s\n", i + 1, locacoesActions.acoes[i].nome);
+        printf("%d. %s\n", i + 1, acoes.acoes[i].nome);
 
         quantidadeAcoes += i;
         printf("\n");
@@ -81,7 +81,7 @@ void menuLocacoes() {
          */
         if(opcao >= 1 && opcao < quantidadeAcoes) {
             //Pega a ação da posição opcao - 1, pois o índice começa em 0
-            locacoesActions.acoes[opcao - 1].acao();
+            acoes.acoes[opcao - 1].acao();
             //Para não limpar a tela após a execução da ação, o loop é interrompido.
             printf("\n");
             printf("Pressione ENTER para continuar...");
@@ -91,69 +91,6 @@ void menuLocacoes() {
         /*
          * Se a opção escolhida for a última, então o usuário é retornado ao menu principal.
          */
-        if (opcao == quantidadeAcoes)
-            return;
-        system("cls");
-    } while (1);
-}
-
-/*
- * A mesma lógica do menuLocacoes, porém com a lista de ações para clientes.
- */
-void menuClientes() {
-    int opcao;
-    do {
-        printf("\n\n");
-        listaAcoes clientesActions = pegarListaClientesAcoes();
-        int quantidadeAcoes = 1;
-        int i = 0;
-        while(clientesActions.acoes[i].acao != NULL) {
-            printf("%d. %s\n", i + 1, clientesActions.acoes[i].nome);
-            i++;
-        }
-        printf("%d. %s\n", i + 1, clientesActions.acoes[i].nome);
-        quantidadeAcoes += i;
-        printf("\n");
-        printf("Digite a opção desejada: ");
-        scanf(" %d", &opcao);
-        system("cls");
-        if (opcao >= 1 && opcao < quantidadeAcoes) {
-            clientesActions.acoes[opcao - 1].acao();
-            printf("\n");
-            printf("Pressione ENTER para continuar...");
-            getchar();
-            getchar();
-        }
-        if (opcao == quantidadeAcoes)
-            return;
-        system("cls");
-    } while (1);
-}
-
-void menuVeiculos() {
-    int opcao;
-    do {
-        printf("\n\n");
-        listaAcoes veiculosActions = pegarListaVeiculosAcoes();
-        int quantidadeAcoes = 1;
-        int i = 0;
-        while(veiculosActions.acoes[i].acao != NULL) {
-            printf("%d. %s\n", i + 1, veiculosActions.acoes[i].nome);
-            i++;
-        }
-        printf("%d. %s\n", i + 1, veiculosActions.acoes[i].nome);
-        quantidadeAcoes += i;
-        printf("\n");
-        printf("Digite a opção desejada: ");
-        scanf(" %d", &opcao);
-        system("cls");
-        if (opcao >= 1 && opcao < quantidadeAcoes) {
-            veiculosActions.acoes[opcao - 1].acao();
-            printf("\n");
-            printf("Pressione ENTER para continuar...");
-            getchar();
-            getchar();
-        }
         if (opcao == quantidadeAcoes)
             return;
         system("cls");
