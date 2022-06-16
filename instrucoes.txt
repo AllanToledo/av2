@@ -4,6 +4,7 @@
 cmake . -B build -G Ninja
 
 //Quando a pasta "build" já estiver criada, para criar um novo executavel, rode o comando:
+//Gerar o executavel após novas linhas de código:
 
 cmake --build build
 
