@@ -28,20 +28,19 @@ void listarVeiculosVelhos();
  * ao digitar a opção desejada.
  */
 
-const listaAcoes veiculoActions = {
-        .acoes = (acao[]) {
-                {.nome = "Cadastrar Veiculo", .acao = cadastrarVeiculo},
-                {.nome = "Listar Veiculos", .acao = listarVeiculos},
-                {.nome = "Atualizar Veiculo", .acao = atualizarVeiculo},
-                {.nome = "Remover Veiculo", .acao = deletarVeiculo},
-                {.nome = "Listar Veiculo Velhos", .acao = listarVeiculosVelhos},
+const acao *veiculoActions = (acao[]) {
+        {.nome = "Cadastrar Veiculo", .acao = cadastrarVeiculo},
+        {.nome = "Listar Veiculos", .acao = listarVeiculos},
+        {.nome = "Atualizar Veiculo", .acao = atualizarVeiculo},
+        {.nome = "Remover Veiculo", .acao = deletarVeiculo},
+        {.nome = "Listar Veiculo Velhos", .acao = listarVeiculosVelhos},
 
-                //Adicionar outras ações acima
-                {.nome = "Voltar", .acao = NULL}
-        },
+        //Adicionar outras ações acima
+        {.nome = "Voltar", .acao = NULL}
+
 };
 
-listaAcoes pegarListaVeiculosAcoes() {
+acao *pegarListaVeiculosAcoes() {
     return veiculoActions;
 }
 
@@ -53,7 +52,7 @@ void cadastrarVeiculo() {
     printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
     int cor;
     scanf("%d", &cor);
-    if(cor == 0){
+    if (cor == 0) {
         strcpy(veiculo.cor, "Preto");
     } else {
         strcpy(veiculo.cor, "Prata");

@@ -3,14 +3,13 @@
 
 // Explicação das funções no arquivo veiculosAcoes.c
 
-const listaAcoes locacoesActions = {
-    .acoes = (acao[]){
+const acao *locacoesActions = (acao[]) {
 
         // Adicionar outras ações acima desta linha
-        {.nome = "Voltar", .acao = NULL}},
+        {.nome = "Voltar", .acao = NULL}
 };
 
-listaAcoes pegarListaLocacoesAcoes()
-{
-        return locacoesActions;
+
+acao *pegarListaLocacoesAcoes() {
+    return locacoesActions;
 }

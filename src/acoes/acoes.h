@@ -14,8 +14,8 @@ typedef struct listaAcoes {
     acao *acoes;
 } listaAcoes;
 
-listaAcoes pegarListaVeiculosAcoes();
-listaAcoes pegarListaClientesAcoes();
-listaAcoes pegarListaLocacoesAcoes();
+acao *pegarListaVeiculosAcoes();
+acao *pegarListaClientesAcoes();
+acao *pegarListaLocacoesAcoes();
 
 #endif //AV2_ACOES_H

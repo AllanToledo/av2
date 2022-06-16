@@ -8,7 +8,7 @@
  * 2. Entrar no submenu do cadastro de clientes
  * 3. Entrar no submenu do cadastro de veículos
  */
-void subMenu(listaAcoes acoes);
+void subMenu(acao *acoes);
 
 void menuPrincipal() {
     int opcao;
@@ -50,7 +50,7 @@ void menuPrincipal() {
  * pegada do vetor de opções.
  * O vetor de opções é inicializado no início do programa, no arquivo de ações.
  */
-void subMenu(listaAcoes acoes){
+void subMenu(acao *acoes) {
     int opcao;
     do {
         printf("\n\n");
@@ -61,14 +61,14 @@ void subMenu(listaAcoes acoes){
          * A cada iteração, a quantidade de opções é incrementada.
          * A última opção é um retorno ao menu principal, que possui a ação NULL.
          */
-        while(acoes.acoes[i].acao != NULL) {
-            printf("%d. %s\n", i + 1, acoes.acoes[i].nome);
+        while(acoes[i].acao != NULL) {
+            printf("%d. %s\n", i + 1, acoes[i].nome);
             i++; //Poderia usar direto a variavel quantidadeAcoes, mas é melhor para o entendimento usar i
             //já que dentro desse escopo ele representa o índice mesmo
         }
         //Pela lógica, ele sempre sai antes de imprimir a ultima, que é o retorno ao menu principal.
         //Então imprimimos a ultima opção depois do loop.
-        printf("%d. %s\n", i + 1, acoes.acoes[i].nome);
+        printf("%d. %s\n", i + 1, acoes[i].nome);
 
         quantidadeAcoes += i;
         printf("\n");
@@ -81,7 +81,7 @@ void subMenu(listaAcoes acoes){
          */
         if(opcao >= 1 && opcao < quantidadeAcoes) {
             //Pega a ação da posição opcao - 1, pois o índice começa em 0
-            acoes.acoes[opcao - 1].acao();
+            acoes[opcao - 1].acao();
             //Para não limpar a tela após a execução da ação, o loop é interrompido.
             printf("\n");
             printf("Pressione ENTER para continuar...");

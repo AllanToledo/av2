@@ -13,22 +13,19 @@ void atualizarCliente();
 
 // Explicação das ações no arquivo veiculosAcoes.c
 
-const listaAcoes clientesActions = {
-    .acoes = (acao[]){
+const acao *clientesActions = (acao[]) {
         {.nome = "Cadastrar clientes", .acao = cadastrarClientes},
         {.nome = "Lista clientes", .acao = listarClientes},
         {.nome = "Atualizar cliente", .acao = atualizarCliente},
         // Adicionar outras ações acima desta linha
-        {.nome = "Voltar", .acao = NULL}},
+        {.nome = "Voltar", .acao = NULL}
 };
 
-listaAcoes pegarListaClientesAcoes()
-{
+acao *pegarListaClientesAcoes() {
     return clientesActions;
 }
 
-void cadastrarClientes()
-{
+void cadastrarClientes() {
     Cliente cliente;
     printf("Digite o nome do cliente: ");
     scanf(" %[^\n]", cliente.nome);
@@ -48,17 +45,14 @@ void cadastrarClientes()
     printf("Cliente cadastrado com sucesso!\n");
 }
 
-void listarClientes()
-{
+void listarClientes() {
     ListaClientes *lista = pegarClientesDB();
     Cliente cliente;
-    if (lista == NULL)
-    {
+    if (lista == NULL) {
         printf("Nenhum cliente cadastrado!\n");
         return;
     }
-    do
-    {
+    do {
         cliente = lista->cliente;
         printCliente(cliente);
         printf("\n");
@@ -67,11 +61,9 @@ void listarClientes()
     liberarListaClientes(lista);
 }
 
-void atualizarCliente()
-{
+void atualizarCliente() {
     ListaClientes *lista = pegarClientesDB();
-    if (lista == NULL)
-    {
+    if (lista == NULL) {
         printf("Nenhum cliente cadastrado!\n");
         return;
     }
@@ -80,18 +72,15 @@ void atualizarCliente()
     printf("Digite o CPF do cliente: ");
     scanf(" %[^\n]", cpf);
     int encontrou = FALSE;
-    do
-    {
+    do {
         cliente = lista->cliente;
-        if (strcmp(cliente.cpf, cpf) == 0)
-        {
+        if (strcmp(cliente.cpf, cpf) == 0) {
             encontrou = TRUE;
             break;
         }
     } while ((lista = lista->proximo) != NULL);
 
-    if (!encontrou)
-    {
+    if (!encontrou) {
         printf("Cliente nao encontrado!\n");
         return;
     }
