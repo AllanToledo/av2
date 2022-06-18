@@ -8,7 +8,7 @@ void reverterMudancaLocacao();
 
 const acao *locacoesActions = (acao[]) {
 
-        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudancaLocacao},
+        {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaLocacao},
 
         // Adicionar outras ações acima desta linha
         {.nome = "Voltar", .acao = NULL}

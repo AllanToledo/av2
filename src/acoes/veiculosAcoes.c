@@ -35,8 +35,8 @@ const acao *veiculoActions = (acao[]) {
         {.nome = "Listar Veiculos", .acesso = FUNCIONARIO, .acao = listarVeiculos},
         {.nome = "Listar Veiculo Velhos", .acesso = FUNCIONARIO, .acao = listarVeiculosVelhos},
         {.nome = "Atualizar Veiculo", .acesso = FUNCIONARIO, .acao = atualizarVeiculo},
-        {.nome = "Reverter Mudança", .acesso = ADMINISTRADOR, .acao = reverterMudancaVeiculos},
-        {.nome = "Remover Veiculo", .acesso = ADMINISTRADOR, .acao = deletarVeiculo},
+        {.nome = "Reverter Mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaVeiculos},
+        {.nome = "Remover Veiculo (admin)", .acesso = ADMINISTRADOR, .acao = deletarVeiculo},
 
         //Adicionar outras ações acima
         {.nome = "Voltar", .acao = NULL}

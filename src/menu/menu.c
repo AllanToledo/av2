@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "menu.h"
 
 /*
@@ -81,7 +82,21 @@ void subMenu(acao *acoes) {
          */
         if(opcao >= 1 && opcao < quantidadeAcoes) {
             //Pega a ação da posição opcao - 1, pois o índice começa em 0
-            acoes[opcao - 1].acao();
+
+            if(acoes[opcao - 1].acesso == ADMINISTRADOR){
+                printf("Digite a senha de administrador: ");
+                char senha[10];
+                scanf(" %s", senha);
+                if(strcmp(senha, "admin") == 0){
+                    system("cls");
+                    acoes[opcao - 1].acao();
+                } else {
+                    printf("Senha incorreta!\n");
+                }
+            } else {
+                system("cls");
+                acoes[opcao - 1].acao();
+            }
             //Para não limpar a tela após a execução da ação, o loop é interrompido.
             printf("\n");
             printf("Pressione ENTER para continuar...");

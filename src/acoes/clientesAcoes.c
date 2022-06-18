@@ -18,7 +18,7 @@ const acao *clientesActions = (acao[]) {
         {.nome = "Cadastrar clientes", .acesso = FUNCIONARIO, .acao = cadastrarClientes},
         {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
         {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
-        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
+        {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
         // Adicionar outras ações acima desta linha
         {.nome = "Voltar", .acao = NULL}
 };
