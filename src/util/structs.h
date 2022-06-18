@@ -37,7 +37,7 @@ typedef struct {
 } Cliente;
 
 typedef struct {
-    int idLocacao;
+    int id;
     int idCarro;
     char cpfCliente[12];
     Data inicio;
