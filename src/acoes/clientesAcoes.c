@@ -11,14 +11,14 @@ void listarClientes();
 
 void atualizarCliente();
 
-void reverterMudanca();
+void reverterMudancaCliente();
 // Explicação das ações no arquivo veiculosAcoes.c
 
 const acao *clientesActions = (acao[]) {
         {.nome = "Cadastrar clientes", .acesso = FUNCIONARIO, .acao = cadastrarClientes},
         {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
         {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
-        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudanca},
+        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
         // Adicionar outras ações acima desta linha
         {.nome = "Voltar", .acao = NULL}
 };
@@ -106,7 +106,7 @@ void atualizarCliente() {
     printf("Cliente atualizado com sucesso!\n");
 }
 
-void reverterMudanca() {
+void reverterMudancaCliente() {
     printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
     printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
     printf("Caso tenha adicionado um cliente, ele será deletado.\n");

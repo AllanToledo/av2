@@ -17,7 +17,7 @@ void criarBackupLocacoesDB() {
     fclose(backup);
 }
 
-void reverMudancasLocacoesDB() {
+void reverterMudancaLocacaoDB() {
     FILE *backup = fopen(backupFilePath, "rb");
     FILE *file = fopen(filePath, "wb");
     Locacao locacaoAux;

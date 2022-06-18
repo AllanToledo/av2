@@ -20,7 +20,7 @@ void criarBackupClientesDB() {
     fclose(backup);
 }
 
-void reverMudancaClientesDB() {
+void reverterMudancaClientesDB() {
     FILE *backup = fopen(backupFilePath, "rb");
     FILE *file = fopen(filePath, "wb");
     Cliente clienteAux;

@@ -15,7 +15,7 @@ void deletarVeiculo();
 
 void listarVeiculosVelhos();
 
-void desfazerMudanca();
+void reverterMudancaVeiculos();
 
 /*
  * Menu de locações, que permite ao usuário escolher entre as opções:
@@ -35,7 +35,7 @@ const acao *veiculoActions = (acao[]) {
         {.nome = "Listar Veiculos", .acesso = FUNCIONARIO, .acao = listarVeiculos},
         {.nome = "Listar Veiculo Velhos", .acesso = FUNCIONARIO, .acao = listarVeiculosVelhos},
         {.nome = "Atualizar Veiculo", .acesso = FUNCIONARIO, .acao = atualizarVeiculo},
-        {.nome = "Desfazer Mudança", .acesso = ADMINISTRADOR, .acao = desfazerMudanca},
+        {.nome = "Reverter Mudança", .acesso = ADMINISTRADOR, .acao = reverterMudancaVeiculos},
         {.nome = "Remover Veiculo", .acesso = ADMINISTRADOR, .acao = deletarVeiculo},
 
         //Adicionar outras ações acima
@@ -47,7 +47,7 @@ acao *pegarListaVeiculosAcoes() {
     return veiculoActions;
 }
 
-void desfazerMudanca() {
+void reverterMudancaVeiculos() {
     printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
     printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
     printf("Caso tenha adicionado um carro, ele será deletado.\n");

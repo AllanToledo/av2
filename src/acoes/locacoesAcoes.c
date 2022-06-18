@@ -4,11 +4,11 @@
 
 // Explicação das funções no arquivo veiculosAcoes.c
 
-void reverterMudanca();
+void reverterMudancaLocacao();
 
 const acao *locacoesActions = (acao[]) {
 
-        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudanca},
+        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudancaLocacao},
 
         // Adicionar outras ações acima desta linha
         {.nome = "Voltar", .acao = NULL}
@@ -19,7 +19,7 @@ acao *pegarListaLocacoesAcoes() {
     return locacoesActions;
 }
 
-void reverterMudanca() {
+void reverterMudancaLocacao() {
     printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
     printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
     printf("Caso tenha adicionado uma locação, ela será deletada.\n");
