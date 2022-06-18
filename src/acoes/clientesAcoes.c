@@ -11,12 +11,14 @@ void listarClientes();
 
 void atualizarCliente();
 
+void reverterMudanca();
 // Explicação das ações no arquivo veiculosAcoes.c
 
 const acao *clientesActions = (acao[]) {
-        {.nome = "Cadastrar clientes", .acao = cadastrarClientes},
-        {.nome = "Lista clientes", .acao = listarClientes},
-        {.nome = "Atualizar cliente", .acao = atualizarCliente},
+        {.nome = "Cadastrar clientes", .acesso = FUNCIONARIO, .acao = cadastrarClientes},
+        {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
+        {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
+        {.nome = "Reverter mudança", .acesso = ADMINISTRADOR, .acao = reverterMudanca},
         // Adicionar outras ações acima desta linha
         {.nome = "Voltar", .acao = NULL}
 };
@@ -102,4 +104,21 @@ void atualizarCliente() {
     atualizarClientesDB(cliente);
     printf("\n\n");
     printf("Cliente atualizado com sucesso!\n");
+}
+
+void reverterMudanca() {
+    printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
+    printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
+    printf("Caso tenha adicionado um cliente, ele será deletado.\n");
+    printf("Caro tenha alterado um cliente, as alterações serão desfeitas.\n");
+    printf("Caso tenha deletado um cliente, ele será restaurado.\n");
+    printf("Deseja continuar? (s/n)\n");
+    char resposta;
+    scanf(" %c", &resposta);
+    if (resposta == 's') {
+        reverterMudancaClientesDB();
+        printf("Mudança desfeita com sucesso!\n");
+    } else {
+        printf("Mudança não foi desfeita!\n");
+    }
 }

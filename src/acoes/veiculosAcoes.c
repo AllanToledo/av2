@@ -15,6 +15,8 @@ void deletarVeiculo();
 
 void listarVeiculosVelhos();
 
+void desfazerMudanca();
+
 /*
  * Menu de locações, que permite ao usuário escolher entre as opções:
  * 1. Cadastrar um novo veículo
@@ -29,11 +31,12 @@ void listarVeiculosVelhos();
  */
 
 const acao *veiculoActions = (acao[]) {
-        {.nome = "Cadastrar Veiculo", .acao = cadastrarVeiculo},
-        {.nome = "Listar Veiculos", .acao = listarVeiculos},
-        {.nome = "Atualizar Veiculo", .acao = atualizarVeiculo},
-        {.nome = "Remover Veiculo", .acao = deletarVeiculo},
-        {.nome = "Listar Veiculo Velhos", .acao = listarVeiculosVelhos},
+        {.nome = "Cadastrar Veiculo", .acesso = FUNCIONARIO, .acao = cadastrarVeiculo},
+        {.nome = "Listar Veiculos", .acesso = FUNCIONARIO, .acao = listarVeiculos},
+        {.nome = "Listar Veiculo Velhos", .acesso = FUNCIONARIO, .acao = listarVeiculosVelhos},
+        {.nome = "Atualizar Veiculo", .acesso = FUNCIONARIO, .acao = atualizarVeiculo},
+        {.nome = "Desfazer Mudança", .acesso = ADMINISTRADOR, .acao = desfazerMudanca},
+        {.nome = "Remover Veiculo", .acesso = ADMINISTRADOR, .acao = deletarVeiculo},
 
         //Adicionar outras ações acima
         {.nome = "Voltar", .acao = NULL}
@@ -44,6 +47,22 @@ acao *pegarListaVeiculosAcoes() {
     return veiculoActions;
 }
 
+void desfazerMudanca() {
+    printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
+    printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
+    printf("Caso tenha adicionado um carro, ele será deletado.\n");
+    printf("Caro tenha alterado um carro, as alterações serão desfeitas.\n");
+    printf("Caso tenha deletado um carro, ele será restaurado.\n");
+    printf("Deseja continuar? (s/n)\n");
+    char resposta;
+    scanf(" %c", &resposta);
+    if (resposta == 's') {
+        reverterMudancaVeiculoDB();
+        printf("Mudança desfeita com sucesso!\n");
+    } else {
+        printf("Mudança não foi desfeita!\n");
+    }
+}
 
 void cadastrarVeiculo() {
     Veiculo veiculo;

@@ -7,5 +7,6 @@ ListaVeiculo *pegarVeiculosDB();
 void inserirVeiculoDB(Veiculo veiculo);
 void atualizarVeiculoDB(Veiculo veiculo);
 void removerVeiculoDB(Veiculo veiculo);
+void reverterMudancaVeiculoDB();
 
 #endif //AV2_VEICULOSDB_H

@@ -5,8 +5,14 @@
 #ifndef AV2_ACOES_H
 #define AV2_ACOES_H
 
+typedef enum {
+    FUNCIONARIO,
+    ADMINISTRADOR
+} NivelAcesso;
+
 typedef struct acao {
     char *nome;
+    NivelAcesso acesso;
     void (*acao)();
 } acao;
 

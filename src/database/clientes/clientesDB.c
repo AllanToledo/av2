@@ -6,12 +6,37 @@
 
 #define filePath "../database/clientes.dat"
 #define tempFilePath "../database/clientes.tmp"
+#define backupFilePath "../database/clientes.bak"
+
+
+void criarBackupClientesDB() {
+    FILE *file = fopen(filePath, "rb");
+    FILE *backup = fopen(backupFilePath, "wb");
+    Cliente clienteAux;
+    while (fread(&clienteAux, sizeof(Cliente), 1, file) == 1) {
+        fwrite(&clienteAux, sizeof(Cliente), 1, backup);
+    }
+    fclose(file);
+    fclose(backup);
+}
+
+void reverMudancaClientesDB() {
+    FILE *backup = fopen(backupFilePath, "rb");
+    FILE *file = fopen(filePath, "wb");
+    Cliente clienteAux;
+    while (fread(&clienteAux, sizeof(Cliente), 1, backup) == 1) {
+        fwrite(&clienteAux, sizeof(Cliente), 1, file);
+    }
+    fclose(backup);
+    fclose(file);
+}
 
 
 /*
  * A função recebe um cliente e adiciona seus dados ao final do arquivo.
  */
 void inserirClientesDB(Cliente cliente){
+    criarBackupClientesDB();
     FILE *file = fopen(filePath, "ab");
     fwrite(&cliente, sizeof(Cliente), 1, file);
     fclose(file);
@@ -25,6 +50,7 @@ void inserirClientesDB(Cliente cliente){
  */
 
 void atualizarClientesDB(Cliente cliente){
+    criarBackupClientesDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Cliente clienteAux;
@@ -48,6 +74,7 @@ void atualizarClientesDB(Cliente cliente){
  */
 
 void removerClientesDB(Cliente cliente){
+    criarBackupClientesDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Cliente clienteAux;

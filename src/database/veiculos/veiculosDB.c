@@ -6,10 +6,34 @@
 
 #define filePath "../database/carros.dat"
 #define tempFilePath "../database/carros.tmp"
+#define backupFilePath "../database/carros.bak"
 
 //Mesma lógica utilizada no arquivo clientesDB.c, acesse o arquivo para mais informações.
 
-void inserirVeiculoDB(Veiculo veiculo){
+void criarBackupVeiculosDB() {
+    FILE *file = fopen(filePath, "rb");
+    FILE *backup = fopen(backupFilePath, "wb");
+    Veiculo carroAux;
+    while (fread(&carroAux, sizeof(Veiculo), 1, file) == 1) {
+        fwrite(&carroAux, sizeof(Veiculo), 1, backup);
+    }
+    fclose(file);
+    fclose(backup);
+}
+
+void reverterMudancaVeiculoDB() {
+    FILE *backup = fopen(backupFilePath, "rb");
+    FILE *file = fopen(filePath, "wb");
+    Veiculo carroAux;
+    while (fread(&carroAux, sizeof(Veiculo), 1, backup) == 1) {
+        fwrite(&carroAux, sizeof(Veiculo), 1, file);
+    }
+    fclose(backup);
+    fclose(file);
+}
+
+void inserirVeiculoDB(Veiculo veiculo) {
+    criarBackupVeiculosDB();
     ListaVeiculo *listaVeiculo = pegarVeiculosDB();
     int maiorId = 0;
     if (listaVeiculo != NULL) {
@@ -28,12 +52,13 @@ void inserirVeiculoDB(Veiculo veiculo){
 }
 
 
-ListaVeiculo *pegarVeiculosDB(){
+ListaVeiculo *pegarVeiculosDB() {
+    criarBackupVeiculosDB();
     FILE *file = fopen(filePath, "rb");
     ListaVeiculo *lista = NULL;
     Veiculo veiculo;
-    while(fread(&veiculo, sizeof(Veiculo), 1, file) == 1){
-        ListaVeiculo *new = (ListaVeiculo *)malloc(sizeof(ListaVeiculo));
+    while (fread(&veiculo, sizeof(Veiculo), 1, file) == 1) {
+        ListaVeiculo *new = (ListaVeiculo *) malloc(sizeof(ListaVeiculo));
         new->veiculo = veiculo;
         new->proximo = lista;
         lista = new;
@@ -42,14 +67,15 @@ ListaVeiculo *pegarVeiculosDB(){
     return lista;
 }
 
-void atualizarVeiculoDB(Veiculo veiculo){
+void atualizarVeiculoDB(Veiculo veiculo) {
+    criarBackupVeiculosDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Veiculo carroAux;
-    while(fread(&carroAux, sizeof(Veiculo), 1, file) == 1){
-        if(carroAux.id == veiculo.id){
+    while (fread(&carroAux, sizeof(Veiculo), 1, file) == 1) {
+        if (carroAux.id == veiculo.id) {
             fwrite(&veiculo, sizeof(Veiculo), 1, temp);
-        }else{
+        } else {
             fwrite(&carroAux, sizeof(Veiculo), 1, temp);
         }
     }
@@ -59,12 +85,13 @@ void atualizarVeiculoDB(Veiculo veiculo){
     rename(tempFilePath, filePath);
 }
 
-void removerVeiculoDB(Veiculo veiculo){
+void removerVeiculoDB(Veiculo veiculo) {
+    criarBackupVeiculosDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Veiculo carroAux;
-    while(fread(&carroAux, sizeof(Veiculo), 1, file) == 1){
-        if(carroAux.id != veiculo.id){
+    while (fread(&carroAux, sizeof(Veiculo), 1, file) == 1) {
+        if (carroAux.id != veiculo.id) {
             fwrite(&carroAux, sizeof(Veiculo), 1, temp);
         }
     }
@@ -73,3 +100,4 @@ void removerVeiculoDB(Veiculo veiculo){
     remove(filePath);
     rename(tempFilePath, filePath);
 }
+

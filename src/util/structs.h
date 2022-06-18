@@ -48,6 +48,8 @@ typedef struct {
 } Locacao;
 
 
+int diferencaEmHoras(Data inicio, Data fim);
+
 void printCliente(Cliente cliente);
 void printVeiculoCabecalho();
 void printVeiculo(Veiculo veiculo);

@@ -4,6 +4,29 @@
 
 #define filePath "../database/locacoes.dat"
 #define tempFilePath "../database/locacoes.tmp"
+#define backupFilePath "../database/locacoes.bak"
+
+void criarBackupLocacoesDB() {
+    FILE *file = fopen(filePath, "rb");
+    FILE *backup = fopen(backupFilePath, "wb");
+    Locacao locacaoAux;
+    while (fread(&locacaoAux, sizeof(Locacao), 1, file) == 1) {
+        fwrite(&locacaoAux, sizeof(Locacao), 1, backup);
+    }
+    fclose(file);
+    fclose(backup);
+}
+
+void reverMudancasLocacoesDB() {
+    FILE *backup = fopen(backupFilePath, "rb");
+    FILE *file = fopen(filePath, "wb");
+    Locacao locacaoAux;
+    while (fread(&locacaoAux, sizeof(Locacao), 1, backup) == 1) {
+        fwrite(&locacaoAux, sizeof(Locacao), 1, file);
+    }
+    fclose(backup);
+    fclose(file);
+}
 
 ListaLocacoes *pegarLocacoesDB() {
     ListaLocacoes *listaLocacoes = NULL;
@@ -21,6 +44,7 @@ ListaLocacoes *pegarLocacoesDB() {
 }
 
 void inserirLocacaoDB(Locacao locacao) {
+    criarBackupLocacoesDB();
     ListaLocacoes *listaLocacoes = pegarLocacoesDB();
     int maiorId = 0;
     if (listaLocacoes != NULL) {
@@ -39,6 +63,7 @@ void inserirLocacaoDB(Locacao locacao) {
 }
 
 void atualizarLocacaoDB(Locacao locacao){
+    criarBackupLocacoesDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Locacao locacaoAux;
@@ -56,6 +81,7 @@ void atualizarLocacaoDB(Locacao locacao){
 }
 
 void removerLocacaoDB(Locacao locacao){
+    criarBackupLocacoesDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
     Locacao locacaoAux;
