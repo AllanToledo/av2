@@ -53,7 +53,6 @@ void inserirVeiculoDB(Veiculo veiculo) {
 
 
 ListaVeiculo *pegarVeiculosDB() {
-    criarBackupVeiculosDB();
     FILE *file = fopen(filePath, "rb");
     ListaVeiculo *lista = NULL;
     Veiculo veiculo;
