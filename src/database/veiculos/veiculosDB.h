@@ -8,7 +8,7 @@ void inserirVeiculoDB(Veiculo veiculo);
 void atualizarVeiculoDB(Veiculo veiculo);
 void removerVeiculoDB(Veiculo veiculo);
 void reverterMudancaVeiculoDB();
-void buscarVeiculoPorIDDB(int id, Veiculo *veiculo);
-void buscarVeiculoPorPlacaDB(char placa[8], Veiculo *veiculo);
+int buscarVeiculoPorIDDB(int id, Veiculo *veiculo);
+int buscarVeiculoPorPlacaDB(char placa[8], Veiculo *veiculo);
 
 #endif //AV2_VEICULOSDB_H

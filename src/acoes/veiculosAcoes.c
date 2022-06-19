@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <stdlib.h>
 #include "acoes.h"
 #include "../util/collections.h"
 #include "../database/veiculos/veiculosDB.h"
@@ -135,31 +136,62 @@ void atualizarVeiculo() {
     printVeiculoCabecalho();
     printVeiculo(veiculo);
     printf("\n");
-
-    printf("Digite as novas informações do veículo:\n\n");
-
+    char stringAux[100];
+    printf("Digite apenas as novas informações do veículo:\n"
+           "Sim, ele só vai alterar se a entrada conter algo.\n\n");
+    fflush(stdin);
     printf("Digite o modelo do veículo: ");
-    scanf(" %s", veiculo.modelo);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        strcpy(veiculo.modelo, stringAux);
+    }
     printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
-    int cor;
-    scanf(" %d", &cor);
-    if (cor == 0) {
-        strcpy(veiculo.cor, "Preto");
-    } else {
-        strcpy(veiculo.cor, "Prata");
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        if (atoi(stringAux) == 0) {
+            strcpy(veiculo.cor, "Preto");
+        } else {
+            strcpy(veiculo.cor, "Prata");
+        }
     }
     printf("Digite o motor do veículo (1.0, 1.6 ou 1.8): ");
-    scanf(" %f", &veiculo.motor);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        veiculo.motor = atof(stringAux);
+    }
     printf("Digite o ano de fabricação do veículo: ");
-    scanf(" %d", &veiculo.anoFabricacao);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        veiculo.anoFabricacao = atoi(stringAux);
+    }
     printf("Digite a placa do veículo: ");
-    scanf(" %s", veiculo.placa);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        strcpy(veiculo.placa, stringAux);
+    }
     printf("Digite 1 se o veículo possui ar condicionado, 0 caso contrário: ");
-    scanf(" %d", &veiculo.arCondicionado);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        veiculo.arCondicionado = atoi(stringAux);
+    }
     printf("Digite a quilometragem do veículo: ");
-    scanf(" %d", &veiculo.quilometragem);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        veiculo.quilometragem = atoi(stringAux);
+    }
     printf("Digite o valor da diária do veículo: ");
-    scanf(" %f", &veiculo.valorDiaria);
+    fgets(stringAux, 100, stdin);
+    stringAux[strlen(stringAux) - 1] = '\0';
+    if(strlen(stringAux) > 0) {
+        veiculo.valorDiaria = atof(stringAux);
+    }
     atualizarVeiculoDB(veiculo);
     printf("Veículo atualizado com sucesso!\n");
 }

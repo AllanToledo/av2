@@ -100,7 +100,7 @@ void subMenu(acao *acoes) {
             //Para não limpar a tela após a execução da ação, o loop é interrompido.
             printf("\n");
             printf("Pressione ENTER para continuar...");
-            getchar();
+            fflush(stdin);
             getchar();
         }
         /*
