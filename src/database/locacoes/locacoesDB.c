@@ -95,3 +95,16 @@ void removerLocacaoDB(Locacao locacao){
     remove(filePath);
     rename(tempFilePath, filePath);
 }
+
+int buscarLocacaoPorIDDB(int id, Locacao *locacao){
+    ListaLocacoes *listaLocacoes = pegarLocacoesDB();
+    ListaLocacoes *lista = listaLocacoes;
+    while(lista != NULL){
+        if(lista->locacao.id == id){
+            *locacao = lista->locacao;
+            return 1;
+        }
+        lista = lista->proximo;
+    }
+    return 0;
+}

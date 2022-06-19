@@ -106,3 +106,17 @@ ListaClientes *pegarClientesDB(){
     fclose(file);
     return lista;
 }
+
+int buscarClientePorCPFDB(char cpf[12], Cliente *cliente){
+    FILE *file = fopen(filePath, "rb");
+    Cliente clienteAux;
+    while(fread(&clienteAux, sizeof(Cliente), 1, file) == 1){
+        if(strcmp(clienteAux.cpf, cpf) == 0){
+            *cliente = clienteAux;
+            return 1;
+        }
+    }
+    fclose(file);
+    return 0;
+}
+

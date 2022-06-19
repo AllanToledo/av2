@@ -83,6 +83,7 @@ void subMenu(acao *acoes) {
         if(opcao >= 1 && opcao < quantidadeAcoes) {
             //Pega a ação da posição opcao - 1, pois o índice começa em 0
 
+            //Caso o nível de acesso ADMINISTRADOR seja necessário, uma senha é solicitada
             if(acoes[opcao - 1].acesso == ADMINISTRADOR){
                 printf("Digite a senha de administrador: ");
                 char senha[10];
@@ -94,7 +95,6 @@ void subMenu(acao *acoes) {
                     printf("Senha incorreta!\n");
                 }
             } else {
-                system("cls");
                 acoes[opcao - 1].acao();
             }
             //Para não limpar a tela após a execução da ação, o loop é interrompido.

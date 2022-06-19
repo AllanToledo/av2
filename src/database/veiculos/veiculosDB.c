@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../../util/structs.h"
 #include "../../util/collections.h"
 #include "veiculosDB.h"
@@ -100,3 +101,26 @@ void removerVeiculoDB(Veiculo veiculo) {
     rename(tempFilePath, filePath);
 }
 
+int buscarVeiculoPorIDDB(int id, Veiculo *veiculo) {
+    ListaVeiculo *lista = pegarVeiculosDB();
+    while (lista != NULL) {
+        if (lista->veiculo.id == id) {
+            *veiculo = lista->veiculo;
+            return 1;
+        }
+        lista = lista->proximo;
+    }
+    return 0;
+}
+
+int buscarVeiculoPorPlacaDB(char placa[8], Veiculo *veiculo) {
+    ListaVeiculo *lista = pegarVeiculosDB();
+    while (lista != NULL) {
+        if (strcmp(lista->veiculo.placa, placa) == 0) {
+            *veiculo = lista->veiculo;
+            return 1;
+        }
+        lista = lista->proximo;
+    }
+    return 0;
+}
