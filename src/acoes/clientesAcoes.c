@@ -4,6 +4,7 @@
 #include "acoes.h"
 #include "../util/collections.h"
 #include "../database/clientes/clientesDB.h"
+#include "../util/scan/scan.h"
 
 void cadastrarClientes();
 
@@ -14,11 +15,14 @@ void atualizarCliente();
 void reverterMudancaCliente();
 // Explicação das ações no arquivo veiculosAcoes.c
 
+void removerCliente();
+
 const acao *clientesActions = (acao[]) {
         {.nome = "Cadastrar clientes", .acesso = FUNCIONARIO, .acao = cadastrarClientes},
         {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
         {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
         {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
+        {.nome = "Remover cliente (admin)", .acesso = ADMINISTRADOR, .acao = removerCliente},
         // Adicionar outras ações acima desta linha
         {.nome = "Voltar", .acao = NULL}
 };
@@ -88,19 +92,41 @@ void atualizarCliente() {
     }
 
     printCliente(cliente);
-    printf("\n");
+
+    char stringAux[100];
+    printf("Digite APENAS as novas informações do veículo:\n"
+           "Sim, ele só vai alterar se a entrada conter algo.\n\n");
+
     printf("Digite o novo nome do cliente: ");
-    scanf(" %[^\n]", cliente.nome);
+    scanString(stringAux, 100);
+    if(strlen(stringAux) > 0) {
+        strcpy(cliente.nome, stringAux);
+    }
     printf("Digite o novo CPF do cliente (somente numeros): ");
-    scanf(" %[^\n]", cliente.cpf);
+    scanString(stringAux, 100);
+    if(strlen(stringAux) > 0) {
+        strcpy(cliente.cpf, stringAux);
+    }
     printf("Digite a nova idade do cliente: ");
-    scanf("%d", &cliente.idade);
+    scanString(stringAux, 100);
+    if(strlen(stringAux) > 0) {
+        cliente.idade = atoi(stringAux);
+    }
     printf("Digite o novo endereco do cliente: ");
-    scanf(" %[^\n]", cliente.endereco);
+    scanString(stringAux, 100);
+    if(strlen(stringAux) > 0) {
+        strcpy(cliente.endereco, stringAux);
+    }
     printf("Digite a nova cidade do cliente: ");
-    scanf(" %[^\n]", cliente.cidade);
+    scanString(stringAux, 100);
+    if(strlen(stringAux) > 0) {
+        strcpy(cliente.cidade, stringAux);
+    }
     printf("Digite a nova sigla estado do cliente: ");
-    scanf(" %[^\n]", cliente.estado);
+    scanString(stringAux, 100);
+    if(strlen(stringAux) > 0) {
+        strcpy(cliente.estado, stringAux);
+    }
     atualizarClientesDB(cliente);
     printf("\n\n");
     printf("Cliente atualizado com sucesso!\n");
@@ -120,5 +146,35 @@ void reverterMudancaCliente() {
         printf("Mudança desfeita com sucesso!\n");
     } else {
         printf("Mudança não foi desfeita!\n");
+    }
+}
+
+void removerCliente(){
+    ListaClientes *lista = pegarClientesDB();
+    if (lista == NULL) {
+        printf("Nenhum cliente cadastrado!\n");
+        return;
+    }
+    liberarListaClientes(lista);
+
+    Cliente cliente;
+    char cpf[12];
+    printf("Digite o CPF do cliente: ");
+    scanf(" %[^\n]", cpf);
+    if(buscarClientePorCPFDB(cpf, &cliente) == FALSE) {
+        printf("Cliente nao encontrado!\n");
+        return;
+    }
+    printCliente(cliente);
+    printf("\n");
+
+    printf("Digite EXCLUIR para remover o cliente.\n");
+    char resposta[8];
+    scanf(" %[^\n]", resposta);
+    if(strcmp(resposta, "EXCLUIR") == 0) {
+        removerClientesDB(cliente);
+        printf("Cliente removido com sucesso!\n");
+    } else {
+        printf("Cliente não foi removido!\n");
     }
 }

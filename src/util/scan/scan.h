@@ -7,6 +7,7 @@
 void printWithSuggestion(char *text, char *suggestion, char *string);
 
 int smithWaterman(char *s1, char *s2);
+void scanString(char *string, int stringSize);
 
 void scanWithSuggestion(char *text, char *string, int numOptions, int stringSize, char options[numOptions][stringSize]);
 #endif //AV2_SCAN_H

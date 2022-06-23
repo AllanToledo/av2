@@ -14,6 +14,10 @@
 void criarBackupVeiculosDB() {
     FILE *file = fopen(filePath, "rb");
     FILE *backup = fopen(backupFilePath, "wb");
+    if(file == NULL || backup == NULL){
+        printf("Erro ao abrir arquivo de veiculos.\n");
+        return;
+    }
     Veiculo carroAux;
     while (fread(&carroAux, sizeof(Veiculo), 1, file) == 1) {
         fwrite(&carroAux, sizeof(Veiculo), 1, backup);
@@ -25,6 +29,10 @@ void criarBackupVeiculosDB() {
 void reverterMudancaVeiculoDB() {
     FILE *backup = fopen(backupFilePath, "rb");
     FILE *file = fopen(filePath, "wb");
+    if(file == NULL || backup == NULL){
+        printf("Erro ao abrir arquivo de veiculos.\n");
+        return;
+    }
     Veiculo carroAux;
     while (fread(&carroAux, sizeof(Veiculo), 1, backup) == 1) {
         fwrite(&carroAux, sizeof(Veiculo), 1, file);
@@ -48,6 +56,10 @@ void inserirVeiculoDB(Veiculo veiculo) {
     }
     veiculo.id = maiorId + 1;
     FILE *file = fopen(filePath, "ab");
+    if(file == NULL){
+        printf("Erro ao abrir arquivo de veiculos.\n");
+        return;
+    }
     fwrite(&veiculo, sizeof(Veiculo), 1, file);
     fclose(file);
 }
@@ -55,6 +67,10 @@ void inserirVeiculoDB(Veiculo veiculo) {
 
 ListaVeiculo *pegarVeiculosDB() {
     FILE *file = fopen(filePath, "rb");
+    if(file == NULL){
+        printf("Erro ao abrir arquivo de veiculos.\n");
+        return NULL;
+    }
     ListaVeiculo *lista = NULL;
     Veiculo veiculo;
     while (fread(&veiculo, sizeof(Veiculo), 1, file) == 1) {
@@ -71,6 +87,10 @@ void atualizarVeiculoDB(Veiculo veiculo) {
     criarBackupVeiculosDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
+    if(file == NULL || temp == NULL){
+        printf("Erro ao abrir arquivo de veiculos.\n");
+        return;
+    }
     Veiculo carroAux;
     while (fread(&carroAux, sizeof(Veiculo), 1, file) == 1) {
         if (carroAux.id == veiculo.id) {
@@ -89,6 +109,10 @@ void removerVeiculoDB(Veiculo veiculo) {
     criarBackupVeiculosDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
+    if(file == NULL || temp == NULL){
+        printf("Erro ao abrir arquivo de veiculos.\n");
+        return;
+    }
     Veiculo carroAux;
     while (fread(&carroAux, sizeof(Veiculo), 1, file) == 1) {
         if (carroAux.id != veiculo.id) {
@@ -101,26 +125,40 @@ void removerVeiculoDB(Veiculo veiculo) {
     rename(tempFilePath, filePath);
 }
 
+/*
+ * Função que busca um veículo pelo id, caso encontre, retorna 1, caso não encontre, retorna 0.
+ * O veículo é retornado por referência.
+ */
+
 int buscarVeiculoPorIDDB(int id, Veiculo *veiculo) {
     ListaVeiculo *lista = pegarVeiculosDB();
     while (lista != NULL) {
         if (lista->veiculo.id == id) {
             *veiculo = lista->veiculo;
+            liberarListaVeiculos(lista);
             return 1;
         }
         lista = lista->proximo;
     }
+    liberarListaVeiculos(lista);
     return 0;
 }
+
+/*
+ * Função que busca um veículo pela placa, caso encontre, retorna 1, caso contrário, retorna 0.
+ * O veículo é retornado por referência.
+ */
 
 int buscarVeiculoPorPlacaDB(char placa[8], Veiculo *veiculo) {
     ListaVeiculo *lista = pegarVeiculosDB();
     while (lista != NULL) {
         if (strcmp(lista->veiculo.placa, placa) == 0) {
             *veiculo = lista->veiculo;
+            liberarListaVeiculos(lista);
             return 1;
         }
         lista = lista->proximo;
     }
+    liberarListaVeiculos(lista);
     return 0;
 }

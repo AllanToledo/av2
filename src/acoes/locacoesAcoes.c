@@ -1,13 +1,17 @@
 #include <stdio.h>
 #include "acoes.h"
 #include "../database/locacoes/locacoesDB.h"
+#include "../database/clientes/clientesDB.h"
 
 // Explicação das funções no arquivo veiculosAcoes.c
+
+void criarLocacao();
 
 void reverterMudancaLocacao();
 
 const acao *locacoesActions = (acao[]) {
 
+        {.nome = "Criar locação", .acesso = FUNCIONARIO, .acao = criarLocacao},
         {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaLocacao},
 
         // Adicionar outras ações acima desta linha
@@ -34,4 +38,16 @@ void reverterMudancaLocacao() {
     } else {
         printf("Mudança não foi desfeita!\n");
     }
+}
+
+void criarLocacao() {
+    char cpf[12];
+    printf("Digite o CPF do cliente");
+    scanf(" %[^\n]s", cpf);
+    Cliente cliente;
+    if(buscarClientePorCPFDB(cpf, &cliente) == 0){
+        printf("Cliente não cadastrado");
+        return;
+    }
+    printf("Escolha o tipo de motor (1.0, 1.6, 1.8)");
 }

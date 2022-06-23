@@ -93,3 +93,8 @@ int smithWaterman(char *s1, char *s2) {
     return max;
 }
 
+void scanString(char *string, int stringSize) {
+    fflush(stdin);
+    fgets(string, 100, stdin);
+    string[strlen(string) - 1] = '\0';
+}

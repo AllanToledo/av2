@@ -5,6 +5,7 @@
 #include "acoes.h"
 #include "../util/collections.h"
 #include "../database/veiculos/veiculosDB.h"
+#include "../util/scan/scan.h"
 
 void cadastrarVeiculo();
 
@@ -119,36 +120,37 @@ void atualizarVeiculo() {
     char placa[8];
     scanf(" %s", placa);
     Veiculo veiculo;
-    int achou = FALSE;
-    do {
-        veiculo = listaVeiculos->veiculo;
-        int placaIgual = strcmp(placa, veiculo.placa) == 0;
-        if (placaIgual) {
-            achou = TRUE;
-            break;
-        }
-    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
-    liberarListaVeiculos(listaVeiculos);
-    if (!achou) {
+    if(buscarVeiculoPorPlacaDB(placa, &veiculo) == FALSE) {
         printf("Veículo não encontrado.\n");
         return;
     }
+//    int achou = FALSE;
+//    do {
+//        veiculo = listaVeiculos->veiculo;
+//        int placaIgual = strcmp(placa, veiculo.placa) == 0;
+//        if (placaIgual) {
+//            achou = TRUE;
+//            break;
+//        }
+//    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
+//    liberarListaVeiculos(listaVeiculos);
+//    if (!achou) {
+//        printf("Veículo não encontrado.\n");
+//        return;
+//    }
     printVeiculoCabecalho();
     printVeiculo(veiculo);
     printf("\n");
     char stringAux[100];
-    printf("Digite apenas as novas informações do veículo:\n"
+    printf("Digite APENAS as novas informações do veículo:\n"
            "Sim, ele só vai alterar se a entrada conter algo.\n\n");
-    fflush(stdin);
     printf("Digite o modelo do veículo: ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         strcpy(veiculo.modelo, stringAux);
     }
     printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         if (atoi(stringAux) == 0) {
             strcpy(veiculo.cor, "Preto");
@@ -157,38 +159,32 @@ void atualizarVeiculo() {
         }
     }
     printf("Digite o motor do veículo (1.0, 1.6 ou 1.8): ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.motor = atof(stringAux);
     }
     printf("Digite o ano de fabricação do veículo: ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.anoFabricacao = atoi(stringAux);
     }
     printf("Digite a placa do veículo: ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         strcpy(veiculo.placa, stringAux);
     }
     printf("Digite 1 se o veículo possui ar condicionado, 0 caso contrário: ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.arCondicionado = atoi(stringAux);
     }
     printf("Digite a quilometragem do veículo: ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.quilometragem = atoi(stringAux);
     }
     printf("Digite o valor da diária do veículo: ");
-    fgets(stringAux, 100, stdin);
-    stringAux[strlen(stringAux) - 1] = '\0';
+    scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.valorDiaria = atof(stringAux);
     }
@@ -206,20 +202,24 @@ void deletarVeiculo() {
     char placa[8];
     scanf(" %s", placa);
     Veiculo veiculo;
-    int achou = FALSE;
-    do {
-        veiculo = listaVeiculos->veiculo;
-        int placaIgual = strcmp(placa, veiculo.placa) == 0;
-        if (placaIgual) {
-            achou = TRUE;
-            break;
-        }
-    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
-    liberarListaVeiculos(listaVeiculos);
-    if (!achou) {
+    if(buscarVeiculoPorPlacaDB(placa, &veiculo) == FALSE) {
         printf("Veículo não encontrado.\n");
         return;
     }
+//    int achou = FALSE;
+//    do {
+//        veiculo = listaVeiculos->veiculo;
+//        int placaIgual = strcmp(placa, veiculo.placa) == 0;
+//        if (placaIgual) {
+//            achou = TRUE;
+//            break;
+//        }
+//    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
+//    liberarListaVeiculos(listaVeiculos);
+//    if (!achou) {
+//        printf("Veículo não encontrado.\n");
+//        return;
+//    }
     printVeiculoCabecalho();
     printVeiculo(veiculo);
     printf("\n");

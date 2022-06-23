@@ -12,6 +12,10 @@
 void criarBackupClientesDB() {
     FILE *file = fopen(filePath, "rb");
     FILE *backup = fopen(backupFilePath, "wb");
+    if(file == NULL || backup == NULL){
+        printf("Erro ao abrir arquivo de clientes.\n");
+        return;
+    }
     Cliente clienteAux;
     while (fread(&clienteAux, sizeof(Cliente), 1, file) == 1) {
         fwrite(&clienteAux, sizeof(Cliente), 1, backup);
@@ -23,6 +27,10 @@ void criarBackupClientesDB() {
 void reverterMudancaClientesDB() {
     FILE *backup = fopen(backupFilePath, "rb");
     FILE *file = fopen(filePath, "wb");
+    if(file == NULL || backup == NULL){
+        printf("Erro ao abrir arquivo de clientes.\n");
+        return;
+    }
     Cliente clienteAux;
     while (fread(&clienteAux, sizeof(Cliente), 1, backup) == 1) {
         fwrite(&clienteAux, sizeof(Cliente), 1, file);
@@ -38,6 +46,10 @@ void reverterMudancaClientesDB() {
 void inserirClientesDB(Cliente cliente){
     criarBackupClientesDB();
     FILE *file = fopen(filePath, "ab");
+    if(file == NULL){
+        printf("Erro ao abrir arquivo de clientes.\n");
+        return;
+    }
     fwrite(&cliente, sizeof(Cliente), 1, file);
     fclose(file);
 }
@@ -53,6 +65,10 @@ void atualizarClientesDB(Cliente cliente){
     criarBackupClientesDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
+    if(file == NULL || temp == NULL){
+        printf("Erro ao abrir arquivo de clientes.\n");
+        return;
+    }
     Cliente clienteAux;
     while(fread(&clienteAux, sizeof(Cliente), 1, file) == 1){
         if(strcmp(clienteAux.cpf, cliente.cpf) == 0){
@@ -77,16 +93,21 @@ void removerClientesDB(Cliente cliente){
     criarBackupClientesDB();
     FILE *file = fopen(filePath, "rb");
     FILE *temp = fopen(tempFilePath, "wb");
+    if(file == NULL || temp == NULL){
+        printf("Erro ao abrir arquivo de clientes.\n");
+        return;
+    }
     Cliente clienteAux;
     while(fread(&clienteAux, sizeof(Cliente), 1, file) == 1){
-        if(strcmp(clienteAux.cpf, cliente.cpf) == 0){
-            fwrite(&clienteAux, sizeof(Cliente), 1, temp);
+        if(strcmp(clienteAux.cpf, cliente.cpf) != 0){
+            fwrite(&cliente, sizeof(Cliente), 1, temp);
         }
     }
     fclose(file);
     fclose(temp);
     remove(filePath);
     rename(tempFilePath, filePath);
+
 }
 
 /*
@@ -107,16 +128,25 @@ ListaClientes *pegarClientesDB(){
     return lista;
 }
 
+/*
+ * A função recebe um cpf e retorna 1 caso o cliente exista e 0 caso contrário.
+ * O cliente é retornado pelo parâmetro cliente.
+ */
+
 int buscarClientePorCPFDB(char cpf[12], Cliente *cliente){
-    FILE *file = fopen(filePath, "rb");
+    ListaClientes *lista = pegarClientesDB();
     Cliente clienteAux;
-    while(fread(&clienteAux, sizeof(Cliente), 1, file) == 1){
+    if(lista == NULL){
+        return 0;
+    }
+    do {
+        clienteAux = lista->cliente;
         if(strcmp(clienteAux.cpf, cpf) == 0){
             *cliente = clienteAux;
+            liberarListaClientes(lista);
             return 1;
         }
-    }
-    fclose(file);
+    } while ((lista = lista->proximo) != NULL);
     return 0;
 }
 

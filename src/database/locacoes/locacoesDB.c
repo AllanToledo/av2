@@ -102,9 +102,11 @@ int buscarLocacaoPorIDDB(int id, Locacao *locacao){
     while(lista != NULL){
         if(lista->locacao.id == id){
             *locacao = lista->locacao;
+            liberarListaLocacoes(listaLocacoes);
             return 1;
         }
         lista = lista->proximo;
     }
+    liberarListaLocacoes(listaLocacoes);
     return 0;
 }
