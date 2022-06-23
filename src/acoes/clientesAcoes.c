@@ -13,52 +13,60 @@ void listarClientes();
 void atualizarCliente();
 
 void reverterMudancaCliente();
+
+void clientesAcima200Pontos();
+
 // Explicação das ações no arquivo veiculosAcoes.c
 
 void removerCliente();
 
-const acao *clientesActions = (acao[]) {
-        {.nome = "Cadastrar clientes", .acesso = FUNCIONARIO, .acao = cadastrarClientes},
-        {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
-        {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
-        {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
-        {.nome = "Remover cliente (admin)", .acesso = ADMINISTRADOR, .acao = removerCliente},
-        // Adicionar outras ações acima desta linha
-        {.nome = "Voltar", .acao = NULL}
-};
+const acao *clientesActions = (acao[]){
+    {.nome = "Cadastrar clientes", .acesso = FUNCIONARIO, .acao = cadastrarClientes},
+    {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
+    {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
+    {.nome = "Listar clientes acima 200 pontos", .acesso = FUNCIONARIO, .acao = clientesAcima200Pontos},
+    {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
+    {.nome = "Remover cliente (admin)", .acesso = ADMINISTRADOR, .acao = removerCliente},
+    // Adicionar outras ações acima desta linha
+    {.nome = "Voltar", .acao = NULL}};
 
-acao *pegarListaClientesAcoes() {
+acao *pegarListaClientesAcoes()
+{
     return clientesActions;
 }
 
-void cadastrarClientes() {
+void cadastrarClientes()
+{
     Cliente cliente;
     printf("Digite o nome do cliente: ");
-    scanf(" %[^\n]", cliente.nome);
+    scanf(" %[^\n]s", cliente.nome);
     printf("Digite o CPF do cliente (somente numeros): ");
-    scanf(" %[^\n]", cliente.cpf);
+    scanf(" %[^\n]s", cliente.cpf);
     printf("Digite a idade do cliente: ");
     scanf("%d", &cliente.idade);
     printf("Digite o endereco do cliente: ");
-    scanf(" %[^\n]", cliente.endereco);
+    scanf(" %[^\n]s", cliente.endereco);
     printf("Digite a cidade do cliente: ");
-    scanf(" %[^\n]", cliente.cidade);
+    scanf(" %[^\n]s", cliente.cidade);
     printf("Digite a sigla estado do cliente: ");
-    scanf(" %[^\n]", cliente.estado);
+    scanf(" %[^\n]s", cliente.estado);
     cliente.pontos = 0;
     inserirClientesDB(cliente);
     printf("\n\n");
     printf("Cliente cadastrado com sucesso!\n");
 }
 
-void listarClientes() {
+void listarClientes()
+{
     ListaClientes *lista = pegarClientesDB();
     Cliente cliente;
-    if (lista == NULL) {
+    if (lista == NULL)
+    {
         printf("Nenhum cliente cadastrado!\n");
         return;
     }
-    do {
+    do
+    {
         cliente = lista->cliente;
         printCliente(cliente);
         printf("\n");
@@ -67,26 +75,31 @@ void listarClientes() {
     liberarListaClientes(lista);
 }
 
-void atualizarCliente() {
+void atualizarCliente()
+{
     ListaClientes *lista = pegarClientesDB();
-    if (lista == NULL) {
+    if (lista == NULL)
+    {
         printf("Nenhum cliente cadastrado!\n");
         return;
     }
     Cliente cliente;
     char cpf[12];
     printf("Digite o CPF do cliente: ");
-    scanf(" %[^\n]", cpf);
+    scanf(" %[^\n]s", cpf);
     int encontrou = FALSE;
-    do {
+    do
+    {
         cliente = lista->cliente;
-        if (strcmp(cliente.cpf, cpf) == 0) {
+        if (strcmp(cliente.cpf, cpf) == 0)
+        {
             encontrou = TRUE;
             break;
         }
     } while ((lista = lista->proximo) != NULL);
 
-    if (!encontrou) {
+    if (!encontrou)
+    {
         printf("Cliente nao encontrado!\n");
         return;
     }
@@ -99,40 +112,48 @@ void atualizarCliente() {
 
     printf("Digite o novo nome do cliente: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(cliente.nome, stringAux);
     }
     printf("Digite o novo CPF do cliente (somente numeros): ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(cliente.cpf, stringAux);
     }
     printf("Digite a nova idade do cliente: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         cliente.idade = atoi(stringAux);
     }
     printf("Digite o novo endereco do cliente: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(cliente.endereco, stringAux);
     }
     printf("Digite a nova cidade do cliente: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(cliente.cidade, stringAux);
     }
     printf("Digite a nova sigla estado do cliente: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(cliente.estado, stringAux);
     }
+    // cliente.pontos = 250;
     atualizarClientesDB(cliente);
     printf("\n\n");
     printf("Cliente atualizado com sucesso!\n");
 }
 
-void reverterMudancaCliente() {
+void reverterMudancaCliente()
+{
     printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
     printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
     printf("Caso tenha adicionado um cliente, ele será deletado.\n");
@@ -141,17 +162,22 @@ void reverterMudancaCliente() {
     printf("Deseja continuar? (s/n)\n");
     char resposta;
     scanf(" %c", &resposta);
-    if (resposta == 's') {
+    if (resposta == 's')
+    {
         reverterMudancaClientesDB();
         printf("Mudança desfeita com sucesso!\n");
-    } else {
+    }
+    else
+    {
         printf("Mudança não foi desfeita!\n");
     }
 }
 
-void removerCliente(){
+void removerCliente()
+{
     ListaClientes *lista = pegarClientesDB();
-    if (lista == NULL) {
+    if (lista == NULL)
+    {
         printf("Nenhum cliente cadastrado!\n");
         return;
     }
@@ -160,8 +186,9 @@ void removerCliente(){
     Cliente cliente;
     char cpf[12];
     printf("Digite o CPF do cliente: ");
-    scanf(" %[^\n]", cpf);
-    if(buscarClientePorCPFDB(cpf, &cliente) == FALSE) {
+    scanf(" %[^\n]s", cpf);
+    if (buscarClientePorCPFDB(cpf, &cliente) == FALSE)
+    {
         printf("Cliente nao encontrado!\n");
         return;
     }
@@ -170,11 +197,37 @@ void removerCliente(){
 
     printf("Digite EXCLUIR para remover o cliente.\n");
     char resposta[8];
-    scanf(" %[^\n]", resposta);
-    if(strcmp(resposta, "EXCLUIR") == 0) {
+    scanf(" %[^\n]s", resposta);
+    if (strcmp(resposta, "EXCLUIR") == 0)
+    {
         removerClientesDB(cliente);
         printf("Cliente removido com sucesso!\n");
-    } else {
+    }
+    else
+    {
         printf("Cliente não foi removido!\n");
     }
+}
+
+void clientesAcima200Pontos()
+{
+    ListaClientes *lista = pegarClientesDB();
+    if (lista == NULL)
+    {
+        printf("Não existe cliente cadastrado.\n");
+        return;
+    }
+    ListaClientes *aux = lista;
+    printf("Lista dos clientes acima 200 pontos.\n");
+    do
+    {
+        Cliente cliente = aux->cliente;
+        if (cliente.pontos > 200)
+        {
+            printf("CPF: %s \n", cliente.cpf);
+            printf("Nome: %s \n", cliente.nome);
+            printf("Pontos: %d \n\n", cliente.pontos);
+        }
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaClientes(lista);
 }
