@@ -16,6 +16,8 @@ void reverterMudancaCliente();
 
 void clientesAcima200Pontos();
 
+void clientesIdade18e25Anos();
+
 // Explicação das ações no arquivo veiculosAcoes.c
 
 void removerCliente();
@@ -25,6 +27,7 @@ const acao *clientesActions = (acao[]){
     {.nome = "Lista clientes", .acesso = FUNCIONARIO, .acao = listarClientes},
     {.nome = "Atualizar cliente", .acesso = FUNCIONARIO, .acao = atualizarCliente},
     {.nome = "Listar clientes acima 200 pontos", .acesso = FUNCIONARIO, .acao = clientesAcima200Pontos},
+    {.nome = "Listar clientes na faixa de idade entre 18 e 25 anos", .acesso = FUNCIONARIO, .acao = clientesIdade18e25Anos},
     {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaCliente},
     {.nome = "Remover cliente (admin)", .acesso = ADMINISTRADOR, .acao = removerCliente},
     // Adicionar outras ações acima desta linha
@@ -227,6 +230,32 @@ void clientesAcima200Pontos()
             printf("CPF: %s \n", cliente.cpf);
             printf("Nome: %s \n", cliente.nome);
             printf("Pontos: %d \n\n", cliente.pontos);
+        }
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaClientes(lista);
+}
+
+void clientesIdade18e25Anos()
+{
+    ListaClientes *lista = pegarClientesDB();
+    int ordem = 1;
+    if (lista == NULL)
+    {
+        printf("Não existe cliente cadastrado na faixa de idade de 18 e 25 anos.\n");
+        return;
+    }
+    ListaClientes *aux = lista;
+    printf("Lista dos clientes com idade entre 18 e 25 anos.\n");
+    do
+    {
+        Cliente cliente = aux->cliente;
+        if (cliente.idade >= 18 && cliente.idade <= 25)
+        {
+            printf("%d - Cliente", ordem);
+            printf("CPF: %s \n", cliente.cpf);
+            printf("Nome: %s \n", cliente.nome);
+            printf("Idade: %d \n", cliente.idade);
+            ordem++;
         }
     } while ((aux = aux->proximo) != NULL);
     liberarListaClientes(lista);
