@@ -49,6 +49,8 @@ typedef struct {
 
 
 int diferencaEmHoras(Data inicio, Data fim);
+Data pegarDataAtual();
+int dataVazia(Data data);
 
 void printCliente(Cliente cliente);
 void printVeiculoCabecalho();

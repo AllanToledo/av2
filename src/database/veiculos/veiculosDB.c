@@ -132,16 +132,18 @@ void removerVeiculoDB(Veiculo veiculo) {
 
 int buscarVeiculoPorIDDB(int id, Veiculo *veiculo) {
     ListaVeiculo *lista = pegarVeiculosDB();
-    while (lista != NULL) {
-        if (lista->veiculo.id == id) {
-            *veiculo = lista->veiculo;
-            liberarListaVeiculos(lista);
-            return 1;
+    ListaVeiculo *aux = lista;
+    int retorno = 0;
+    while (aux != NULL) {
+        if (aux->veiculo.id == id) {
+            *veiculo = aux->veiculo;
+            retorno = 1;
+            break;
         }
-        lista = lista->proximo;
+        aux = aux->proximo;
     }
     liberarListaVeiculos(lista);
-    return 0;
+    return retorno;
 }
 
 /*

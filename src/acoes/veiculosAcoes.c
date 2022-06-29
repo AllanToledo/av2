@@ -6,6 +6,7 @@
 #include "../util/collections.h"
 #include "../database/veiculos/veiculosDB.h"
 #include "../util/scan/scan.h"
+#include "../database/vendas/vendasDB.h"
 
 void cadastrarVeiculo();
 
@@ -68,28 +69,42 @@ void reverterMudancaVeiculos() {
 
 void cadastrarVeiculo() {
     Veiculo veiculo;
-    printf("Digite o modelo do veículo: ");
-    scanf(" %s", veiculo.modelo);
-    printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
-    int cor;
-    scanf("%d", &cor);
-    if (cor == 0) {
-        strcpy(veiculo.cor, "Preto");
-    } else {
-        strcpy(veiculo.cor, "Prata");
-    }
-    printf("Digite o motor do veículo (1.0, 1.6 ou 1.8): ");
-    scanf(" %f", &veiculo.motor);
+    //----------------------------------------------------------
+    printf("Selecione o modelo do veiculo: \n");
+    char modelos[][10] = {"Uno", "Polo", "Corolla"};
+    scanSelection(veiculo.modelo, 3, 10, modelos);
+    printf("Modelo Selecionado: %s\n", veiculo.modelo);
+    //-----------------------------------------------------------
+    printf("Selecione a cor do veículo: \n");
+    char cores[][6] = {"Preto", "Prata"};
+    scanSelection(veiculo.cor, 2, 6, cores);
+    printf("Cor selecionada: %s\n", veiculo.cor);
+    //-----------------------------------------------------------
+    printf("Selecione a motorização: \n");
+    char motores[][4] = {"1.0", "1.6", "1.8"};
+    char stringAux[4] = "";
+    scanSelection(stringAux, 3, 4, motores);
+    veiculo.motor = atof(stringAux);
+    printf("Motor selecionado: %.1f\n", veiculo.motor);
+    //----------------------------------------------------------
     printf("Digite o ano de fabricação do veículo: ");
     scanf(" %d", &veiculo.anoFabricacao);
+    //---------------------------------------------------------
     printf("Digite a placa do veículo: ");
     scanf(" %s", veiculo.placa);
-    printf("Digite 1 se o veículo possui ar condicionado, 0 caso contrário: ");
-    scanf(" %d", &veiculo.arCondicionado);
+    //---------------------------------------------------------
+    printf("Selecione se possui Ar-Condicionado: \n");
+    char opcoes[][4] = {"Sim", "Nao"};
+    scanSelection(stringAux, 2, 4, opcoes);
+    veiculo.arCondicionado = strcmp(stringAux, "Sim") == 0;
+    printf("Opção selecionada: %s\n", stringAux);
+    //--------------------------------------------------------
     printf("Digite a quilometragem do veículo: ");
     scanf(" %d", &veiculo.quilometragem);
+    //--------------------------------------------------------
     printf("Digite o valor da diária do veículo: ");
     scanf(" %f", &veiculo.valorDiaria);
+    //----------------------------------------------------
     veiculo.disponivel = TRUE;
     inserirVeiculoDB(veiculo);
     printf("Veículo cadastrado com sucesso!\n");
@@ -124,70 +139,65 @@ void atualizarVeiculo() {
         printf("Veículo não encontrado.\n");
         return;
     }
-//    int achou = FALSE;
-//    do {
-//        veiculo = listaVeiculos->veiculo;
-//        int placaIgual = strcmp(placa, veiculo.placa) == 0;
-//        if (placaIgual) {
-//            achou = TRUE;
-//            break;
-//        }
-//    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
-//    liberarListaVeiculos(listaVeiculos);
-//    if (!achou) {
-//        printf("Veículo não encontrado.\n");
-//        return;
-//    }
     printVeiculoCabecalho();
     printVeiculo(veiculo);
     printf("\n");
     char stringAux[100];
     printf("Digite APENAS as novas informações do veículo:\n"
            "Sim, ele só vai alterar se a entrada conter algo.\n\n");
-    printf("Digite o modelo do veículo: ");
-    scanString(stringAux, 100);
+    //----------------------------------------------
+    printf("Digite o modelo do veículo: \n");
+    char modelos[][10] = {"", "Uno", "Polo", "Corolla"};
+    scanSelection(stringAux, 4, 10, modelos);
     if(strlen(stringAux) > 0) {
         strcpy(veiculo.modelo, stringAux);
     }
-    printf("Digite a cor do veículo (0 = Preto, 1 = Prata): ");
-    scanString(stringAux, 100);
+    //--------------------------------------------
+    printf("Selecione a cor: \n");
+    char cores[][10] = {"", "Preto", "Prata"};
+    scanSelection(stringAux, 3, 10, cores);
     if(strlen(stringAux) > 0) {
-        if (atoi(stringAux) == 0) {
-            strcpy(veiculo.cor, "Preto");
-        } else {
-            strcpy(veiculo.cor, "Prata");
-        }
+        strcpy(veiculo.cor, stringAux);
     }
-    printf("Digite o motor do veículo (1.0, 1.6 ou 1.8): ");
-    scanString(stringAux, 100);
+    //--------------------------------------------------------
+    printf("Selecione o motor do veículo: \n");
+    char motores[][4] = {"","1.0", "1.6", "1.8"};
+    scanSelection(stringAux, 4, 4, motores);
     if(strlen(stringAux) > 0) {
         veiculo.motor = atof(stringAux);
     }
+    //--------------------------------------------------------
     printf("Digite o ano de fabricação do veículo: ");
     scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.anoFabricacao = atoi(stringAux);
     }
+    //--------------------------------------------------------
     printf("Digite a placa do veículo: ");
     scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         strcpy(veiculo.placa, stringAux);
     }
-    printf("Digite 1 se o veículo possui ar condicionado, 0 caso contrário: ");
-    scanString(stringAux, 100);
+    //-------------------------------------------------------
+    printf("Possui ar condicinado?\n ");
+    char opcoes[][4] = {"", "Sim", "Nao"};
+    scanSelection(stringAux, 3, 4, opcoes);
     if(strlen(stringAux) > 0) {
-        veiculo.arCondicionado = atoi(stringAux);
+        veiculo.arCondicionado = strcmp(stringAux, "Sim") == 0 ? 1 : 0;
     }
+    //---------------------------------------------------------
     printf("Digite a quilometragem do veículo: ");
     scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.quilometragem = atoi(stringAux);
     }
+    //-----------------------------------------------------------
     printf("Digite o valor da diária do veículo: ");
     scanString(stringAux, 100);
     if(strlen(stringAux) > 0) {
         veiculo.valorDiaria = atof(stringAux);
     }
+    //------------------------------------------------------------
     atualizarVeiculoDB(veiculo);
     printf("Veículo atualizado com sucesso!\n");
 }
@@ -250,12 +260,13 @@ void listarVeiculosVelhos() {
     }
 
     int anoAtual = pegarAnoAtual();
-
+    limparVendas();
     printf("Veículos fabricados antes de %d:\n", anoAtual - 3);
     printVeiculoCabecalho();
     do {
         Veiculo veiculo = listaVeiculos->veiculo;
         if ((anoAtual - veiculo.anoFabricacao) <= 3) continue;
+        inserirVenda(veiculo);
         printVeiculo(veiculo);
     } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
     liberarListaVeiculos(listaVeiculos);

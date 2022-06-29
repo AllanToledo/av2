@@ -15,4 +15,4 @@ add_executable(av2
         src/acoes/locacoesAcoes.c
         src/acoes/clientesAcoes.c
         src/util/scan/scan.h
-        src/util/scan/scan.c)
+        src/util/scan/scan.c src/database/vendas/vendasDB.c src/database/vendas/vendasDB.h)

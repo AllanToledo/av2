@@ -135,18 +135,20 @@ ListaClientes *pegarClientesDB(){
 
 int buscarClientePorCPFDB(char cpf[12], Cliente *cliente){
     ListaClientes *lista = pegarClientesDB();
-    Cliente clienteAux;
+    ListaClientes *aux = lista;
+    int retorno = 0;
     if(lista == NULL){
         return 0;
     }
     do {
-        clienteAux = lista->cliente;
+        Cliente clienteAux = aux->cliente;
         if(strcmp(clienteAux.cpf, cpf) == 0){
             *cliente = clienteAux;
-            liberarListaClientes(lista);
-            return 1;
+            retorno = 1;
+            break;
         }
-    } while ((lista = lista->proximo) != NULL);
-    return 0;
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaClientes(lista);
+    return retorno;
 }
 

@@ -98,3 +98,38 @@ void scanString(char *string, int stringSize) {
     fgets(string, 100, stdin);
     string[strlen(string) - 1] = '\0';
 }
+
+
+void scanSelection(char *result, int countOptions, int stringLength, char options[countOptions][stringLength]){
+    int option = 0;
+    while(1){
+        for(int i = 0; i < countOptions; i++){
+            printf("\33[2K\r");
+            if(i == option) printf("\33[30m\33[47m");
+            printf("%s", options[i]);
+            if(i == option) printf("\33[0m");
+            printf("\33[1B");
+        }
+        printf("\33[%dA", countOptions);
+        //printf("\33[8m");
+        char ch = getch();
+        if(ch == -32){
+            ch = getch();
+            if(ch == 72) option--;
+            if(ch == 80) option++;
+            if(option < 0) option = countOptions - 1;
+            if(option == countOptions) option = 0;
+            continue;
+        }
+        if(ch == '\r'){
+            strcpy(result, options[option]);
+            for(int i = 0; i < countOptions; i++){
+                printf("\33[2K\r");
+                printf("\33[1B");
+            }
+            printf("\33[%dA", countOptions);
+            //printf("\33[0m");
+            return;
+        }
+    }
+}
