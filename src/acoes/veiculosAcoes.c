@@ -20,6 +20,10 @@ void listarVeiculosVelhos();
 
 void reverterMudancaVeiculos();
 
+void listarVeiculosDisponivelLocacao();
+
+void listarVeiculosEmprestados();
+
 /*
  * Menu de locações, que permite ao usuário escolher entre as opções:
  * 1. Cadastrar um novo veículo
@@ -33,24 +37,28 @@ void reverterMudancaVeiculos();
  * ao digitar a opção desejada.
  */
 
-const acao *veiculoActions = (acao[]) {
-        {.nome = "Cadastrar Veiculo", .acesso = FUNCIONARIO, .acao = cadastrarVeiculo},
-        {.nome = "Listar Veiculos", .acesso = FUNCIONARIO, .acao = listarVeiculos},
-        {.nome = "Listar Veiculo Velhos", .acesso = FUNCIONARIO, .acao = listarVeiculosVelhos},
-        {.nome = "Atualizar Veiculo", .acesso = FUNCIONARIO, .acao = atualizarVeiculo},
-        {.nome = "Reverter Mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaVeiculos},
-        {.nome = "Remover Veiculo (admin)", .acesso = ADMINISTRADOR, .acao = deletarVeiculo},
+const acao *veiculoActions = (acao[]){
+    {.nome = "Cadastrar Veiculo", .acesso = FUNCIONARIO, .acao = cadastrarVeiculo},
+    {.nome = "Listar Veiculos", .acesso = FUNCIONARIO, .acao = listarVeiculos},
+    {.nome = "Listar Veiculo Velhos", .acesso = FUNCIONARIO, .acao = listarVeiculosVelhos},
+    {.nome = "Atualizar Veiculo", .acesso = FUNCIONARIO, .acao = atualizarVeiculo},
+    {.nome = "Listar veiculos disponível para locação", .acesso = FUNCIONARIO, .acao = listarVeiculosDisponivelLocacao},
+    {.nome = "Listar veículos locados", .acesso = FUNCIONARIO, .acao = listarVeiculosEmprestados},
+    {.nome = "Reverter Mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaVeiculos},
+    {.nome = "Remover Veiculo (admin)", .acesso = ADMINISTRADOR, .acao = deletarVeiculo},
 
-        //Adicionar outras ações acima
-        {.nome = "Voltar", .acao = NULL}
+    // Adicionar outras ações acima
+    {.nome = "Voltar", .acao = NULL}
 
 };
 
-acao *pegarListaVeiculosAcoes() {
+acao *pegarListaVeiculosAcoes()
+{
     return veiculoActions;
 }
 
-void reverterMudancaVeiculos() {
+void reverterMudancaVeiculos()
+{
     printf("Desfazer mudança irá retornar o arquivo carros.dat para o estado anterior.\n");
     printf("Muito cuidado ao desfazer mudanças, pois pode causar perda de dados.\n");
     printf("Caso tenha adicionado um carro, ele será deletado.\n");
@@ -59,15 +67,19 @@ void reverterMudancaVeiculos() {
     printf("Deseja continuar? (s/n)\n");
     char resposta;
     scanf(" %c", &resposta);
-    if (resposta == 's') {
+    if (resposta == 's')
+    {
         reverterMudancaVeiculoDB();
         printf("Mudança desfeita com sucesso!\n");
-    } else {
+    }
+    else
+    {
         printf("Mudança não foi desfeita!\n");
     }
 }
 
-void cadastrarVeiculo() {
+void cadastrarVeiculo()
+{
     Veiculo veiculo;
     //----------------------------------------------------------
     printf("Selecione o modelo do veiculo: \n");
@@ -110,24 +122,29 @@ void cadastrarVeiculo() {
     printf("Veículo cadastrado com sucesso!\n");
 }
 
-void listarVeiculos() {
+void listarVeiculos()
+{
     printf("Veículos cadastrados:\n\n");
     ListaVeiculo *listaVeiculos = pegarVeiculosDB();
-    if (listaVeiculos == NULL) {
+    if (listaVeiculos == NULL)
+    {
         printf("Não há veículos cadastrados.\n");
         return;
     }
     printVeiculoCabecalho();
-    do {
+    do
+    {
         Veiculo veiculo = listaVeiculos->veiculo;
         printVeiculo(veiculo);
     } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
     liberarListaVeiculos(listaVeiculos);
 }
 
-void atualizarVeiculo() {
+void atualizarVeiculo()
+{
     ListaVeiculo *listaVeiculos = pegarVeiculosDB();
-    if (listaVeiculos == NULL) {
+    if (listaVeiculos == NULL)
+    {
         printf("Não há veículos cadastrados.\n");
         return;
     }
@@ -135,7 +152,8 @@ void atualizarVeiculo() {
     char placa[8];
     scanf(" %s", placa);
     Veiculo veiculo;
-    if(buscarVeiculoPorPlacaDB(placa, &veiculo) == FALSE) {
+    if (buscarVeiculoPorPlacaDB(placa, &veiculo) == FALSE)
+    {
         printf("Veículo não encontrado.\n");
         return;
     }
@@ -149,52 +167,60 @@ void atualizarVeiculo() {
     printf("Digite o modelo do veículo: \n");
     char modelos[][10] = {"", "Uno", "Polo", "Corolla"};
     scanSelection(stringAux, 4, 10, modelos);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(veiculo.modelo, stringAux);
     }
     //--------------------------------------------
     printf("Selecione a cor: \n");
     char cores[][10] = {"", "Preto", "Prata"};
     scanSelection(stringAux, 3, 10, cores);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(veiculo.cor, stringAux);
     }
     //--------------------------------------------------------
     printf("Selecione o motor do veículo: \n");
-    char motores[][4] = {"","1.0", "1.6", "1.8"};
+    char motores[][4] = {"", "1.0", "1.6", "1.8"};
     scanSelection(stringAux, 4, 4, motores);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         veiculo.motor = atof(stringAux);
     }
     //--------------------------------------------------------
     printf("Digite o ano de fabricação do veículo: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         veiculo.anoFabricacao = atoi(stringAux);
     }
     //--------------------------------------------------------
     printf("Digite a placa do veículo: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         strcpy(veiculo.placa, stringAux);
     }
     //-------------------------------------------------------
     printf("Possui ar condicinado?\n ");
     char opcoes[][4] = {"", "Sim", "Nao"};
     scanSelection(stringAux, 3, 4, opcoes);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         veiculo.arCondicionado = strcmp(stringAux, "Sim") == 0 ? 1 : 0;
     }
     //---------------------------------------------------------
     printf("Digite a quilometragem do veículo: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         veiculo.quilometragem = atoi(stringAux);
     }
     //-----------------------------------------------------------
     printf("Digite o valor da diária do veículo: ");
     scanString(stringAux, 100);
-    if(strlen(stringAux) > 0) {
+    if (strlen(stringAux) > 0)
+    {
         veiculo.valorDiaria = atof(stringAux);
     }
     //------------------------------------------------------------
@@ -202,9 +228,11 @@ void atualizarVeiculo() {
     printf("Veículo atualizado com sucesso!\n");
 }
 
-void deletarVeiculo() {
+void deletarVeiculo()
+{
     ListaVeiculo *listaVeiculos = pegarVeiculosDB();
-    if (listaVeiculos == NULL) {
+    if (listaVeiculos == NULL)
+    {
         printf("Não há veículos cadastrados.\n");
         return;
     }
@@ -212,31 +240,33 @@ void deletarVeiculo() {
     char placa[8];
     scanf(" %s", placa);
     Veiculo veiculo;
-    if(buscarVeiculoPorPlacaDB(placa, &veiculo) == FALSE) {
+    if (buscarVeiculoPorPlacaDB(placa, &veiculo) == FALSE)
+    {
         printf("Veículo não encontrado.\n");
         return;
     }
-//    int achou = FALSE;
-//    do {
-//        veiculo = listaVeiculos->veiculo;
-//        int placaIgual = strcmp(placa, veiculo.placa) == 0;
-//        if (placaIgual) {
-//            achou = TRUE;
-//            break;
-//        }
-//    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
-//    liberarListaVeiculos(listaVeiculos);
-//    if (!achou) {
-//        printf("Veículo não encontrado.\n");
-//        return;
-//    }
+    //    int achou = FALSE;
+    //    do {
+    //        veiculo = listaVeiculos->veiculo;
+    //        int placaIgual = strcmp(placa, veiculo.placa) == 0;
+    //        if (placaIgual) {
+    //            achou = TRUE;
+    //            break;
+    //        }
+    //    } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
+    //    liberarListaVeiculos(listaVeiculos);
+    //    if (!achou) {
+    //        printf("Veículo não encontrado.\n");
+    //        return;
+    //    }
     printVeiculoCabecalho();
     printVeiculo(veiculo);
     printf("\n");
     printf("Digite EXCLUIR para confirmar a exclusão do veículo.\n");
     char confirmacao[8];
     scanf(" %s", confirmacao);
-    if (strcmp(confirmacao, "EXCLUIR") != 0) {
+    if (strcmp(confirmacao, "EXCLUIR") != 0)
+    {
         printf("Exclusão cancelada.\n");
         return;
     }
@@ -244,17 +274,19 @@ void deletarVeiculo() {
     printf("Veículo removido com sucesso!\n");
 }
 
-//função que retorna o ano atual
-int pegarAnoAtual() {
+// função que retorna o ano atual
+int pegarAnoAtual()
+{
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     return tm.tm_year + 1900;
 }
 
-
-void listarVeiculosVelhos() {
+void listarVeiculosVelhos()
+{
     ListaVeiculo *listaVeiculos = pegarVeiculosDB();
-    if (listaVeiculos == NULL) {
+    if (listaVeiculos == NULL)
+    {
         printf("Não há veículos cadastrados.\n");
         return;
     }
@@ -263,11 +295,79 @@ void listarVeiculosVelhos() {
     limparVendas();
     printf("Veículos fabricados antes de %d:\n", anoAtual - 3);
     printVeiculoCabecalho();
-    do {
+    do
+    {
         Veiculo veiculo = listaVeiculos->veiculo;
-        if ((anoAtual - veiculo.anoFabricacao) <= 3) continue;
+        if ((anoAtual - veiculo.anoFabricacao) <= 3)
+            continue;
         inserirVenda(veiculo);
         printVeiculo(veiculo);
     } while ((listaVeiculos = listaVeiculos->proximo) != NULL);
     liberarListaVeiculos(listaVeiculos);
+}
+
+void listarVeiculosDisponivelLocacao()
+{
+
+    ListaVeiculo *listaVeiculos = pegarVeiculosDB();
+    int ordem = 1;
+    if (listaVeiculos == NULL)
+    {
+        printf("Não há nenhum modelo de veículo disponível.\n");
+        return;
+    }
+
+    ListaVeiculo *aux = listaVeiculos;
+    printf("Qual modelo de veículo deseja locar? \n");
+    char modelo[10];
+    scanf(" %[^\n]s ", modelo);
+    do
+    {
+        Veiculo veiculo = aux->veiculo;
+        if (veiculo.disponivel && strcmp(veiculo.modelo, modelo) == 0)
+        {
+            printf("%d - Veiculo ", ordem);
+            printf("Placa: %s \n", veiculo.placa);
+            printf("Modelo %s \n", veiculo.modelo);
+            printf("Cor: %d \n", veiculo.cor);
+            printf("Ar condicionado: %s \n", veiculo.arCondicionado ? "sim" : "não");
+            ordem++;
+        }
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaVeiculos(listaVeiculos);
+}
+
+void listarVeiculosEmprestados()
+{
+
+    ListaVeiculo *listaVeiculos = pegarVeiculosDB();
+    int ordem = 1;
+    int total = 0;
+    int locado = 0;
+
+    if (listaVeiculos == NULL)
+    {
+        printf("Não há veículos locados.\n");
+        return;
+    }
+
+    ListaVeiculo *aux = listaVeiculos;
+    printf("Lista dos veículos locados.\n");
+    do
+    {
+        total++;
+        Veiculo veiculo = aux->veiculo;
+        if (!veiculo.disponivel)
+        {
+            printf("%d - Veiculo", ordem);
+            printf("Placa: %s \n", veiculo.placa);
+            printf("Modelo %s \n", veiculo.modelo);
+            printf("Cor: %d \n", veiculo.cor);
+            ordem++;
+            locado++;
+        }
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaVeiculos(listaVeiculos);
+    printf("Total de veículos locados: %d \n", locado);
+    printf("Total de veículos: %d \n", total);
 }

@@ -215,6 +215,7 @@ void removerCliente()
 void clientesAcima200Pontos()
 {
     ListaClientes *lista = pegarClientesDB();
+    int ordem = 1;
     if (lista == NULL)
     {
         printf("Não existe cliente cadastrado.\n");
@@ -227,9 +228,11 @@ void clientesAcima200Pontos()
         Cliente cliente = aux->cliente;
         if (cliente.pontos > 200)
         {
+            printf("%d - Cliente ", ordem);
             printf("CPF: %s \n", cliente.cpf);
             printf("Nome: %s \n", cliente.nome);
             printf("Pontos: %d \n\n", cliente.pontos);
+            ordem++;
         }
     } while ((aux = aux->proximo) != NULL);
     liberarListaClientes(lista);
@@ -251,7 +254,7 @@ void clientesIdade18e25Anos()
         Cliente cliente = aux->cliente;
         if (cliente.idade >= 18 && cliente.idade <= 25)
         {
-            printf("%d - Cliente", ordem);
+            printf("%d - Cliente ", ordem);
             printf("CPF: %s \n", cliente.cpf);
             printf("Nome: %s \n", cliente.nome);
             printf("Idade: %d \n", cliente.idade);
