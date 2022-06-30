@@ -9,10 +9,10 @@ Atividade avaliativa 2 - Laboratório de Programação (UFMT)
 * Implementar função de busca por nome ou CPF, em ClienteDB
 
 ### Submenu de Locação
-* Criar locação (Ver item 3.4 do enunciado)
-* Listar locações ativas
-* Finalizar locação (Ver item 3.12 do enunciado)
-* Listar todas locações
+* ~~Criar locação (Ver item 3.4 do enunciado)~~
+* ~~Listar locações ativas~~
+* ~~Finalizar locação (Ver item 3.12 do enunciado)~~
+* ~~Listar todas locações~~
 * Alterar locação
 * Remover locação
 
@@ -31,8 +31,8 @@ Atividade avaliativa 2 - Laboratório de Programação (UFMT)
 * ~~Listar clientes~~
 * ~~Alterar cliente~~
   * Implementar de forma que só precise alterar um campo ao invés de todos os campos 
-* Listar clientes com mais de 200 pontos
-* Listar clientes entre 18 e 25 anos
+* ~~Listar clientes com mais de 200 pontos~~
+* ~~Listar clientes entre 18 e 25 anos~~
 * Listar locações de um cliente (Por CPF ou nome)
 * ~~Remover cliente~~
 

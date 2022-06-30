@@ -19,11 +19,14 @@ void finalizarLocacao();
 
 void reverterMudancaLocacao();
 
+void listarPorCliente();
+
 
 const acao *locacoesActions = (acao[]) {
         {.nome = "Criar locação", .acesso = FUNCIONARIO, .acao = criarLocacao},
         {.nome = "Listar todas locações", .acesso = FUNCIONARIO, .acao = listarTodasLocacoes},
         {.nome = "Listar todas locações em aberto", .acesso = FUNCIONARIO, .acao = listarTodasLocacoesAbertas},
+        {.nome = "Listar todas locações de um cliente", .acesso = FUNCIONARIO, .acao = listarPorCliente},
         {.nome = "Finalizar locação", .acesso = FUNCIONARIO, .acao = finalizarLocacao},
         {.nome = "Reverter mudança (admin)", .acesso = ADMINISTRADOR, .acao = reverterMudancaLocacao},
 
@@ -185,7 +188,7 @@ void finalizarLocacao() {
     }
 
     Veiculo veiculo;
-    if(buscarVeiculoPorIDDB(locacao.idCarro, &veiculo) == 0) {
+    if (buscarVeiculoPorIDDB(locacao.idCarro, &veiculo) == 0) {
         printf("Erro: Veiculo não cadastrado.");
         return;
     }
@@ -214,4 +217,58 @@ void finalizarLocacao() {
     atualizarClientesDB(cliente);
 
     printf("Locação finalizada com sucesso!!\n\n");
+}
+
+void listarPorCliente() {
+    printf("Deseja buscar por NOME ou CPF?\n");
+    char opcoes[2][5] = {"CPF", "NOME"};
+    char escolha[5] = "\0";
+    scanSelection(escolha, 2, 5, opcoes);
+    printf("Selecionado: %s\n\n", escolha);
+
+    Cliente cliente;
+    int compararCPF = strcmp(escolha, "CPF") == 0;
+    char busca[50];
+    printf("Digite o %s: ", compararCPF ? "CPF" : "NOME");
+    scanf(" %[^\n]s", busca);
+    int encontrouCliente;
+    if (compararCPF) {
+        encontrouCliente = buscarClientePorCPFDB(busca, &cliente);
+    } else {
+        encontrouCliente = buscarClientePorNomeDB(busca, &cliente);
+    }
+    if (!encontrouCliente) {
+        printf("\n\nCliente não encontrado\n\n");
+        return;
+    }
+
+    printf("\nNome cliente: %s\n\n", cliente.nome);
+
+    ListaLocacoes *listaLocacoes = pegarLocacoesDB();
+    if (listaLocacoes == NULL) {
+        printf("\n\nNenhuma locação cadastrada.\n\n");
+    }
+    ListaLocacoes *aux = listaLocacoes;
+    int vazia = 1;
+    do {
+        Locacao locacao = aux->locacao;
+        if (strcmp(locacao.cpfCliente, cliente.cpf) != 0) continue;
+        vazia = 0;
+
+        Veiculo veiculo;
+        if (buscarVeiculoPorIDDB(locacao.idCarro, &veiculo) == 0) {
+            printf("Erro ao carregar dados do veículos.\n");
+        } else {
+            printf("Placa: %s\n", veiculo.placa);
+        }
+        Data data = locacao.inicio;
+        printf("Data Inicial: %d/%d/%d %d:00\n", data.dia, data.mes, data.ano, data.hora);
+        data = locacao.devolucao;
+        printf("Data Final: %d/%d/%d %d:00\n", data.dia, data.mes, data.ano, data.hora);
+        printf("Valor: R$ %.2f\n", locacao.valor);
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaLocacoes(listaLocacoes);
+    if (vazia) {
+        printf("Este cliente não possui nenhuma locação.\n\n");
+    }
 }
