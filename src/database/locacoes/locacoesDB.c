@@ -43,7 +43,7 @@ ListaLocacoes *pegarLocacoesDB() {
     return listaLocacoes;
 }
 
-void inserirLocacaoDB(Locacao locacao) {
+int inserirLocacaoDB(Locacao locacao) {
     criarBackupLocacoesDB();
     ListaLocacoes *listaLocacoes = pegarLocacoesDB();
     int maiorId = 0;
@@ -60,6 +60,7 @@ void inserirLocacaoDB(Locacao locacao) {
     FILE *file = fopen(filePath, "ab");
     fwrite(&locacao, sizeof(Locacao), 1, file);
     fclose(file);
+    return locacao.id;
 }
 
 void atualizarLocacaoDB(Locacao locacao){

@@ -123,8 +123,9 @@ void criarLocacao() {
     };
     strcpy(locacao.cpfCliente, cpf);
     veiculo.disponivel = FALSE;
-    inserirLocacaoDB(locacao);
+    int id = inserirLocacaoDB(locacao);
     atualizarVeiculoDB(veiculo);
+    printf("ID da locação: %d\n", id);
     printf("\nLocação feita com sucesso!!\n\n");
 }
 
@@ -211,6 +212,8 @@ void finalizarLocacao() {
     float custo = ((float) diferenca) * (veiculo.valorDiaria / 24.0);
     locacao.valor = custo;
     cliente.pontos += (int) custo;
+
+    printf("Custo final: R$ %.2f\n\n", custo);
 
     atualizarLocacaoDB(locacao);
     atualizarVeiculoDB(veiculo);
