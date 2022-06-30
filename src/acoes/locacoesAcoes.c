@@ -255,6 +255,7 @@ void listarPorCliente() {
         if (strcmp(locacao.cpfCliente, cliente.cpf) != 0) continue;
         vazia = 0;
 
+        printf("Id: %d\n", locacao.id);
         Veiculo veiculo;
         if (buscarVeiculoPorIDDB(locacao.idCarro, &veiculo) == 0) {
             printf("Erro ao carregar dados do veículos.\n");
