@@ -152,3 +152,22 @@ int buscarClientePorCPFDB(char cpf[12], Cliente *cliente){
     return retorno;
 }
 
+int buscarClientePorNomeDB(char *nome, Cliente *cliente){
+    ListaClientes *lista = pegarClientesDB();
+    ListaClientes *aux = lista;
+    int retorno = 0;
+    if(lista == NULL){
+        return 0;
+    }
+    do {
+        Cliente clienteAux = aux->cliente;
+        if(strcmp(clienteAux.nome, nome) == 0){
+            *cliente = clienteAux;
+            retorno = 1;
+            break;
+        }
+    } while ((aux = aux->proximo) != NULL);
+    liberarListaClientes(lista);
+    return retorno;
+}
+

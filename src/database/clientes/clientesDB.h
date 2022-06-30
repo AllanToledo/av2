@@ -9,5 +9,5 @@ void removerClientesDB(Cliente cliente);
 ListaClientes *pegarClientesDB();
 void reverterMudancaClientesDB();
 int buscarClientePorCPFDB(char cpf[12], Cliente *cliente);
-int buscarClientePorNome(char nome[50], Cliente *cliente);
+int buscarClientePorNomeDB(char nome[50], Cliente *cliente);
 #endif //AV2_CLIENTESDB_H
